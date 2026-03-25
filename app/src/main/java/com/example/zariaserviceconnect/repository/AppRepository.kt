@@ -17,12 +17,10 @@ class AppRepository(private val context: Context) {
     private fun errorMessage(code: Int, body: String?): String {
         return try {
             if (body == null) return "Error $code. Please try again."
-            if (body.contains("\"detail\":\"")) {
+            if (body.contains("\"detail\":\""))
                 return body.substringAfter("\"detail\":\"").substringBefore("\"")
-            }
-            if (body.contains("\"msg\":\"")) {
+            if (body.contains("\"msg\":\""))
                 return body.substringAfter("\"msg\":\"").substringBefore("\"")
-            }
             "Error $code. Please try again."
         } catch (e: Exception) {
             "Error $code. Please try again."
@@ -44,8 +42,7 @@ class AppRepository(private val context: Context) {
         }
     } catch (e: Exception) {
         Result.failure(Exception(
-            "Cannot connect to server. Check your IP address and make sure " +
-            "the backend is running."))
+            "Cannot connect to server. Check your IP address."))
     }
 
     suspend fun registerResident(
@@ -70,8 +67,7 @@ class AppRepository(private val context: Context) {
         fun String.toRB() = toRequestBody("text/plain".toMediaTypeOrNull())
         val filePart = MultipartBody.Part.createFormData(
             "id_document", idDocumentFile.name,
-            idDocumentFile.asRequestBody(
-                "application/octet-stream".toMediaTypeOrNull()))
+            idDocumentFile.asRequestBody("application/octet-stream".toMediaTypeOrNull()))
         val response = api.registerProvider(
             name.toRB(), email.toRB(), phone.toRB(), password.toRB(),
             categoryId.toString().toRB(), yearsOfExperience.toString().toRB(),
@@ -96,17 +92,26 @@ class AppRepository(private val context: Context) {
 
     // ── Providers ─────────────────────────────────────────────────────────────
 
-    suspend fun getProviders(categoryId: Int? = null): Result<List<ProviderModel>> = try {
-        val response = api.getProviders(categoryId)
+    // Updated: now passes user GPS to backend for location-based sorting
+    suspend fun getProviders(
+        categoryId : Int?    = null,
+        userLat    : Double? = null,
+        userLon    : Double? = null
+    ): Result<List<ProviderModel>> = try {
+        val response = api.getProviders(categoryId, userLat, userLon)
         if (response.isSuccessful) Result.success(response.body() ?: emptyList())
         else Result.failure(Exception("Failed to load providers."))
     } catch (e: Exception) {
         Result.failure(Exception("Cannot connect to server."))
     }
 
-    // NEW: Search providers by name, category, or description
-    suspend fun searchProviders(query: String): Result<List<ProviderModel>> = try {
-        val response = api.searchProviders(query.trim())
+    // Updated: search also passes user GPS
+    suspend fun searchProviders(
+        query   : String,
+        userLat : Double? = null,
+        userLon : Double? = null
+    ): Result<List<ProviderModel>> = try {
+        val response = api.searchProviders(query.trim(), userLat, userLon)
         if (response.isSuccessful) Result.success(response.body() ?: emptyList())
         else Result.failure(Exception(
             errorMessage(response.code(), response.errorBody()?.string())))
@@ -128,6 +133,20 @@ class AppRepository(private val context: Context) {
         if (response.isSuccessful && response.body() != null)
             Result.success(response.body()!!)
         else Result.failure(Exception("Could not load profile."))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
+    // NEW: Provider updates their GPS location on the backend
+    suspend fun updateMyLocation(
+        latitude     : Double,
+        longitude    : Double,
+        locationText : String? = null
+    ): Result<MessageResponse> = try {
+        val response = api.updateMyLocation(latitude, longitude, locationText)
+        if (response.isSuccessful && response.body() != null)
+            Result.success(response.body()!!)
+        else Result.failure(Exception("Failed to update location."))
     } catch (e: Exception) {
         Result.failure(Exception("Cannot connect to server."))
     }
@@ -209,7 +228,7 @@ class AppRepository(private val context: Context) {
         else Result.failure(Exception(
             errorMessage(response.code(), response.errorBody()?.string())))
     } catch (e: Exception) {
-        Result.failure(Exception("Cannot connect to server. Please try again."))
+        Result.failure(Exception("Cannot connect to server."))
     }
 
     suspend fun getMyComplaints(): Result<List<ComplaintModel>> = try {

@@ -1,10 +1,13 @@
 package com.example.zariaserviceconnect.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.zariaserviceconnect.models.*
 import com.example.zariaserviceconnect.repository.AppRepository
+import com.example.zariaserviceconnect.utils.LocationHelper
+import com.example.zariaserviceconnect.utils.UserLocation
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,6 +38,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _userName      = MutableStateFlow<String?>(null)
     val userName: StateFlow<String?> = _userName
 
+    // ── Location (NEW) ────────────────────────────────────────────────────────
+    // Stores the resident's current GPS location
+    // null means location not available or permission denied
+    private val _userLocation = MutableStateFlow<UserLocation?>(null)
+    val userLocation: StateFlow<UserLocation?> = _userLocation
+
+    // Whether we have location permission
+    private val _hasLocationPermission = MutableStateFlow(false)
+    val hasLocationPermission: StateFlow<Boolean> = _hasLocationPermission
+
     // ── Categories ────────────────────────────────────────────────────────────
     private val _categories = MutableStateFlow<UiState<List<CategoryModel>>>(UiState.Idle)
     val categories: StateFlow<UiState<List<CategoryModel>>> = _categories
@@ -49,20 +62,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _myProviderProfile = MutableStateFlow<UiState<ProviderModel>>(UiState.Idle)
     val myProviderProfile: StateFlow<UiState<ProviderModel>> = _myProviderProfile
 
-    // NEW: Search state
-    // Holds the current search query text
-    private val _searchQuery = MutableStateFlow("")
+    // ── Search ────────────────────────────────────────────────────────────────
+    private val _searchQuery   = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
-    // Holds search results — separate from regular providers list
     private val _searchResults = MutableStateFlow<UiState<List<ProviderModel>>>(UiState.Idle)
     val searchResults: StateFlow<UiState<List<ProviderModel>>> = _searchResults
 
-    // Tracks whether we are in search mode or browse mode
-    private val _isSearching = MutableStateFlow(false)
+    private val _isSearching   = MutableStateFlow(false)
     val isSearching: StateFlow<Boolean> = _isSearching
 
-    // Used to debounce search so we don't call API on every keystroke
     private var searchJob: Job? = null
 
     // ── Bookings ──────────────────────────────────────────────────────────────
@@ -73,10 +82,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val bookingAction: StateFlow<UiState<String>> = _bookingAction
 
     // ── Reviews ───────────────────────────────────────────────────────────────
-    private val _reviews      = MutableStateFlow<UiState<List<ReviewModel>>>(UiState.Idle)
+    private val _reviews       = MutableStateFlow<UiState<List<ReviewModel>>>(UiState.Idle)
     val reviews: StateFlow<UiState<List<ReviewModel>>> = _reviews
 
-    private val _reviewAction = MutableStateFlow<UiState<String>>(UiState.Idle)
+    private val _reviewAction  = MutableStateFlow<UiState<String>>(UiState.Idle)
     val reviewAction: StateFlow<UiState<String>> = _reviewAction
 
     // ── Complaints ────────────────────────────────────────────────────────────
@@ -92,6 +101,48 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             _userRole.value = repo.getRole()
             _userName.value = repo.getName()
+        }
+    }
+
+    // ── Location Actions (NEW) ────────────────────────────────────────────────
+
+    /**
+     * Called after the user grants location permission.
+     * Gets their current GPS position and stores it.
+     */
+    fun fetchUserLocation(context: Context) {
+        _hasLocationPermission.value = LocationHelper.hasPermission(context)
+        if (!_hasLocationPermission.value) return
+
+        LocationHelper.getCurrentLocation(context) { location ->
+            _userLocation.value = location
+        }
+    }
+
+    /**
+     * Called when permission result comes back.
+     * Updates state and fetches location if granted.
+     */
+    fun onLocationPermissionResult(granted: Boolean, context: Context) {
+        _hasLocationPermission.value = granted
+        if (granted) {
+            fetchUserLocation(context)
+        }
+    }
+
+    /**
+     * Provider calls this to save their GPS location to the backend.
+     * Called automatically when provider opens the app and has permission.
+     */
+    fun updateProviderLocation(context: Context) {
+        if (!LocationHelper.hasPermission(context)) return
+
+        LocationHelper.getCurrentLocation(context) { location ->
+            if (location != null) {
+                viewModelScope.launch {
+                    repo.updateMyLocation(location.latitude, location.longitude)
+                }
+            }
         }
     }
 
@@ -141,10 +192,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     // ── Provider Actions ──────────────────────────────────────────────────────
 
+    // Now passes user GPS automatically if available
     fun loadProviders(categoryId: Int? = null) {
         viewModelScope.launch {
             _providers.value = UiState.Loading
-            val result = repo.getProviders(categoryId)
+            val loc = _userLocation.value
+            val result = repo.getProviders(
+                categoryId = categoryId,
+                userLat    = loc?.latitude,
+                userLon    = loc?.longitude
+            )
             _providers.value = result.fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message ?: "Failed to load providers") }
@@ -152,29 +209,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // NEW: Update search query with debounce
-    // Waits 400ms after user stops typing before calling the API
-    // This prevents calling the API on every single keystroke
+    // Search also passes user GPS for distance sorting
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
-
         if (query.isBlank()) {
-            // User cleared the search — go back to normal mode
-            _isSearching.value      = false
-            _searchResults.value    = UiState.Idle
+            _isSearching.value   = false
+            _searchResults.value = UiState.Idle
             searchJob?.cancel()
             return
         }
-
         _isSearching.value = true
-
-        // Cancel previous search if user is still typing
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            // Wait 400ms before searching — debounce
-            delay(400)
+            delay(400) // debounce
             _searchResults.value = UiState.Loading
-            val result = repo.searchProviders(query)
+            val loc = _userLocation.value
+            val result = repo.searchProviders(
+                query   = query,
+                userLat = loc?.latitude,
+                userLon = loc?.longitude
+            )
             _searchResults.value = result.fold(
                 onSuccess = { UiState.Success(it) },
                 onFailure = { UiState.Error(it.message ?: "Search failed") }
@@ -182,7 +236,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // NEW: Clear search and go back to categories
     fun clearSearch() {
         _searchQuery.value   = ""
         _isSearching.value   = false
@@ -292,9 +345,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             _complaintSubmit.value = UiState.Loading
             val result = repo.submitComplaint(bookingId, message)
             _complaintSubmit.value = result.fold(
-                onSuccess = {
-                    UiState.Success("Complaint submitted. Admin will review it.")
-                },
+                onSuccess = { UiState.Success("Complaint submitted. Admin will review it.") },
                 onFailure = { UiState.Error(it.message ?: "Failed to submit complaint.") }
             )
         }
@@ -316,8 +367,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun logout() {
         viewModelScope.launch {
             repo.logout()
-            _userRole.value = null
-            _userName.value = null
+            _userRole.value   = null
+            _userName.value   = null
+            _userLocation.value = null
             _loginState.value = UiState.Idle
             clearSearch()
         }

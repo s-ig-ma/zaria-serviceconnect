@@ -1,8 +1,11 @@
 package com.example.zariaserviceconnect
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,6 +14,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
@@ -19,10 +23,10 @@ import com.example.zariaserviceconnect.ui.auth.*
 import com.example.zariaserviceconnect.ui.provider.*
 import com.example.zariaserviceconnect.ui.resident.*
 import com.example.zariaserviceconnect.ui.shared.*
+import com.example.zariaserviceconnect.utils.LocationHelper
 import com.example.zariaserviceconnect.viewmodel.MainViewModel
 import kotlinx.coroutines.delay
 
-// ── All navigation route strings defined here ─────────────────────────────────
 object Routes {
     const val SPLASH            = "splash"
     const val WELCOME           = "welcome"
@@ -52,6 +56,31 @@ class MainActivity : ComponentActivity() {
 fun ZariaApp() {
     val navController = rememberNavController()
     val viewModel: MainViewModel = viewModel()
+    val context = LocalContext.current
+
+    // ── Location permission launcher ──────────────────────────────────────────
+    // This shows the system permission dialog when launched
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                      permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        viewModel.onLocationPermissionResult(granted, context)
+    }
+
+    // On first launch check if we already have permission, if not request it
+    LaunchedEffect(Unit) {
+        if (LocationHelper.hasPermission(context)) {
+            viewModel.fetchUserLocation(context)
+        } else {
+            locationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
 
     NavHost(navController = navController, startDestination = Routes.SPLASH) {
 
@@ -113,7 +142,7 @@ fun ZariaApp() {
             )
         }
 
-        // ── Resident Home (bottom nav) ─────────────────────────────────────────
+        // ── Resident Home ─────────────────────────────────────────────────────
         composable(Routes.RESIDENT_HOME) {
             ResidentHomeScreen(
                 viewModel  = viewModel,
@@ -238,7 +267,7 @@ fun ZariaApp() {
             )
         }
 
-        // ── Provider Home (bottom nav) ────────────────────────────────────────
+        // ── Provider Home ─────────────────────────────────────────────────────
         composable(Routes.PROVIDER_HOME) {
             ProviderHomeScreen(
                 viewModel = viewModel,
@@ -253,7 +282,7 @@ fun ZariaApp() {
     }
 }
 
-// ── Splash Screen ─────────────────────────────────────────────────────────────
+// ── Splash ────────────────────────────────────────────────────────────────────
 @Composable
 fun SplashScreen(onNavigate: (String?) -> Unit) {
     val viewModel: MainViewModel = viewModel()
@@ -264,14 +293,10 @@ fun SplashScreen(onNavigate: (String?) -> Unit) {
         onNavigate(role)
     }
 
-    WelcomeScreen(
-        onResidentLogin = {},
-        onProviderLogin = {},
-        onRegister      = {}
-    )
+    WelcomeScreen(onResidentLogin = {}, onProviderLogin = {}, onRegister = {})
 }
 
-// ── Resident Home with Bottom Navigation ─────────────────────────────────────
+// ── Resident Home with Bottom Nav ─────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResidentHomeScreen(
@@ -305,8 +330,6 @@ fun ResidentHomeScreen(
             }
         }
     ) { padding ->
-        // padding contains the bottom nav bar height — must be applied
-        // so content is never hidden behind the navigation bar
         Box(modifier = Modifier.padding(padding)) {
             when (selectedTab) {
                 0 -> CategoriesScreen(
@@ -338,10 +361,16 @@ fun ResidentHomeScreen(
     }
 }
 
-// ── Provider Home with Bottom Navigation ─────────────────────────────────────
+// ── Provider Home with Bottom Nav ─────────────────────────────────────────────
 @Composable
 fun ProviderHomeScreen(viewModel: MainViewModel, onLogout: () -> Unit) {
+    val context = LocalContext.current
     var selectedTab by remember { mutableIntStateOf(0) }
+
+    // When provider opens the app, automatically update their location
+    LaunchedEffect(Unit) {
+        viewModel.updateProviderLocation(context)
+    }
 
     Scaffold(
         bottomBar = {

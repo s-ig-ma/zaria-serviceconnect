@@ -1,7 +1,5 @@
 package com.example.zariaserviceconnect.ui.resident
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -420,8 +418,8 @@ private fun SearchProviderCard(
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-                if (provider.location != null) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (provider.location != null) {
                         Icon(Icons.Default.LocationOn, null,
                             modifier = Modifier.size(13.dp),
                             tint     = Color.Gray)
@@ -430,7 +428,25 @@ private fun SearchProviderCard(
                             color    = Color.Gray,
                             fontSize = 12.sp,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis)
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false))
+                    }
+                    if (provider.distanceKm != null) {
+                        if (provider.location != null) {
+                            Text(" • ", color = Color.Gray, fontSize = 12.sp)
+                        }
+                        Icon(Icons.Default.NearMe, null,
+                            modifier = Modifier.size(13.dp),
+                            tint     = Color(0xFF1565C0))
+                        Spacer(Modifier.width(2.dp))
+                        val distText = if (provider.distanceKm < 1.0)
+                            "${(provider.distanceKm * 1000).toInt()} m away"
+                        else
+                            "${"%.1f".format(provider.distanceKm)} km away"
+                        Text(distText,
+                            color      = Color(0xFF1565C0),
+                            fontSize   = 12.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Medium)
                     }
                 }
             }
@@ -537,8 +553,8 @@ fun ProviderCard(provider: ProviderModel, onClick: () -> Unit) {
                 Text(provider.category.name, color = Color.Gray, fontSize = 13.sp)
                 Spacer(Modifier.height(4.dp))
                 StarRatingDisplay(provider.averageRating, provider.totalReviews)
-                if (provider.location != null) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (provider.location != null) {
                         Icon(Icons.Default.LocationOn, null,
                             modifier = Modifier.size(14.dp), tint = Color.Gray)
                         Spacer(Modifier.width(2.dp))
@@ -546,7 +562,25 @@ fun ProviderCard(provider: ProviderModel, onClick: () -> Unit) {
                             color    = Color.Gray,
                             fontSize = 12.sp,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis)
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false))
+                    }
+                    if (provider.distanceKm != null) {
+                        if (provider.location != null) {
+                            Text(" • ", color = Color.Gray, fontSize = 12.sp)
+                        }
+                        Icon(Icons.Default.NearMe, null,
+                            modifier = Modifier.size(13.dp),
+                            tint     = Color(0xFF1565C0))
+                        Spacer(Modifier.width(2.dp))
+                        val distText = if (provider.distanceKm < 1.0)
+                            "${(provider.distanceKm * 1000).toInt()} m away"
+                        else
+                            "${"%.1f".format(provider.distanceKm)} km away"
+                        Text(distText,
+                            color      = Color(0xFF1565C0),
+                            fontSize   = 12.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Medium)
                     }
                 }
             }
