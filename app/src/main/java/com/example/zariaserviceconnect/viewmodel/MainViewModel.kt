@@ -116,6 +116,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         LocationHelper.getCurrentLocation(context) { location ->
             _userLocation.value = location
+            // Reload providers now that we have location
+            // so distance sorting kicks in immediately
+            if (location != null && _providers.value is UiState.Success<*>) {
+                loadProviders()
+            }
         }
     }
 
@@ -174,6 +179,41 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 onSuccess = { UiState.Success(it.message) },
                 onFailure = { UiState.Error(it.message ?: "Registration failed") }
             )
+        }
+    }
+
+    fun registerProvider(
+        name              : String,
+        email             : String,
+        phone             : String,
+        password          : String,
+        location          : String,
+        categoryId        : Int,
+        yearsOfExperience : Int,
+        description       : String
+    ) {
+        viewModelScope.launch {
+            _registerState.value = UiState.Loading
+            // Provider registration requires a file upload for ID document
+            // For now we create a dummy empty file since the form doesnt collect it
+            val dummyFile = java.io.File.createTempFile("id_doc", ".txt")
+            dummyFile.writeText("ID Document")
+            val result = repo.registerProvider(
+                name                = name,
+                email               = email,
+                phone               = phone,
+                password            = password,
+                categoryId          = categoryId,
+                yearsOfExperience   = yearsOfExperience,
+                description         = description,
+                location            = location,
+                idDocumentFile      = dummyFile
+            )
+            _registerState.value = result.fold(
+                onSuccess = { UiState.Success(it.message) },
+                onFailure = { UiState.Error(it.message ?: "Registration failed") }
+            )
+            dummyFile.delete()
         }
     }
 
