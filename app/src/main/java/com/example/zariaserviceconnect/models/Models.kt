@@ -33,9 +33,9 @@ data class UserModel(
     val phone    : String,
     val location : String?,
     val role     : String,
-    @SerializedName("is_active")    val isActive    : Boolean,
+    @SerializedName("is_active")     val isActive    : Boolean,
     @SerializedName("profile_photo") val profilePhoto: String?,
-    @SerializedName("created_at")   val createdAt   : String
+    @SerializedName("created_at")    val createdAt   : String
 )
 
 // ── Category ──────────────────────────────────────────────────────────────────
@@ -50,7 +50,7 @@ data class CategoryModel(
 // ── Provider ──────────────────────────────────────────────────────────────────
 
 data class ProviderModel(
-    val id         : Int,
+    val id          : Int,
     @SerializedName("user_id")      val userId     : Int,
     @SerializedName("category_id")  val categoryId : Int,
     val description : String?,
@@ -59,14 +59,15 @@ data class ProviderModel(
     @SerializedName("average_rating") val averageRating : Double,
     @SerializedName("total_reviews")  val totalReviews  : Int,
     val location   : String?,
-
-    // NEW: GPS coordinates stored on provider
     val latitude   : Double?,
     val longitude  : Double?,
-
-    // NEW: distance calculated by backend Haversine formula
-    // null if user location not available or provider has no GPS
     @SerializedName("distance_km") val distanceKm : Double?,
+
+    // NEW: availability status
+    // "available" = ready for bookings (green)
+    // "busy"      = currently working on a booking (orange)
+    // "offline"   = not available today (gray)
+    @SerializedName("availability_status") val availabilityStatus: String = "available",
 
     @SerializedName("created_at") val createdAt : String,
     val user     : UserModel,
@@ -84,7 +85,7 @@ data class BookingCreateRequest(
 )
 
 data class BookingStatusUpdate(
-    val status : String,
+    val status         : String,
     @SerializedName("provider_notes") val providerNotes: String? = null
 )
 

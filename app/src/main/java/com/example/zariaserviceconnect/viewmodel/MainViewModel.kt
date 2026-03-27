@@ -95,6 +95,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _complaintSubmit = MutableStateFlow<UiState<String>>(UiState.Idle)
     val complaintSubmit: StateFlow<UiState<String>> = _complaintSubmit
 
+    // ── Availability (NEW) ───────────────────────────────────────────────────
+    private val _availabilityAction = MutableStateFlow<UiState<String>>(UiState.Idle)
+    val availabilityAction: StateFlow<UiState<String>> = _availabilityAction
+
     // ─────────────────────────────────────────────────────────────────────────
 
     init {
@@ -401,6 +405,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
     }
+
+    // ── Availability Actions (NEW) ───────────────────────────────────────────
+
+    fun setAvailability(status: String) {
+        viewModelScope.launch {
+            _availabilityAction.value = UiState.Loading
+            val result = repo.setAvailability(status)
+            _availabilityAction.value = result.fold(
+                onSuccess = { UiState.Success(it.message) },
+                onFailure = { UiState.Error(it.message ?: "Failed to update availability.") }
+            )
+            // Reload profile so the badge updates immediately
+            loadMyProviderProfile()
+        }
+    }
+
+    fun resetAvailabilityAction() { _availabilityAction.value = UiState.Idle }
 
     // ── Logout ────────────────────────────────────────────────────────────────
 

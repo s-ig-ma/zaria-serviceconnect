@@ -41,8 +41,7 @@ class AppRepository(private val context: Context) {
                 errorMessage(response.code(), response.errorBody()?.string())))
         }
     } catch (e: Exception) {
-        Result.failure(Exception(
-            "Cannot connect to server. Check your IP address."))
+        Result.failure(Exception("Cannot connect to server. Check your IP address."))
     }
 
     suspend fun registerResident(
@@ -92,7 +91,6 @@ class AppRepository(private val context: Context) {
 
     // ── Providers ─────────────────────────────────────────────────────────────
 
-    // Updated: now passes user GPS to backend for location-based sorting
     suspend fun getProviders(
         categoryId : Int?    = null,
         userLat    : Double? = null,
@@ -105,7 +103,6 @@ class AppRepository(private val context: Context) {
         Result.failure(Exception("Cannot connect to server."))
     }
 
-    // Updated: search also passes user GPS
     suspend fun searchProviders(
         query   : String,
         userLat : Double? = null,
@@ -137,7 +134,6 @@ class AppRepository(private val context: Context) {
         Result.failure(Exception("Cannot connect to server."))
     }
 
-    // NEW: Provider updates their GPS location on the backend
     suspend fun updateMyLocation(
         latitude     : Double,
         longitude    : Double,
@@ -147,6 +143,17 @@ class AppRepository(private val context: Context) {
         if (response.isSuccessful && response.body() != null)
             Result.success(response.body()!!)
         else Result.failure(Exception("Failed to update location."))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
+    // NEW: Provider manually sets availability
+    suspend fun setAvailability(status: String): Result<MessageResponse> = try {
+        val response = api.setAvailability(status)
+        if (response.isSuccessful && response.body() != null)
+            Result.success(response.body()!!)
+        else Result.failure(Exception(
+            errorMessage(response.code(), response.errorBody()?.string())))
     } catch (e: Exception) {
         Result.failure(Exception("Cannot connect to server."))
     }

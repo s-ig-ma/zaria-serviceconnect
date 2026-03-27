@@ -42,7 +42,6 @@ interface ApiService {
 
     // ── Providers ─────────────────────────────────────────────────────────────
 
-    // Updated: now accepts user GPS for location-based sorting
     @GET("providers/")
     suspend fun getProviders(
         @Query("category_id") categoryId: Int?    = null,
@@ -50,7 +49,6 @@ interface ApiService {
         @Query("user_lon")    userLon   : Double? = null
     ): Response<List<ProviderModel>>
 
-    // Updated: search also accepts user GPS for distance sorting
     @GET("providers/search")
     suspend fun searchProviders(
         @Query("q")        query  : String,
@@ -64,7 +62,6 @@ interface ApiService {
     @GET("providers/me/profile")
     suspend fun getMyProviderProfile(): Response<ProviderModel>
 
-    // NEW: Provider updates their GPS location
     @PATCH("providers/me/location")
     suspend fun updateMyLocation(
         @Query("latitude")      latitude    : Double,
@@ -88,6 +85,12 @@ interface ApiService {
         @Path("id") id: Int,
         @Body update: BookingStatusUpdate
     ): Response<BookingModel>
+
+    // NEW: Provider manually sets their availability
+    @PATCH("bookings/provider/availability")
+    suspend fun setAvailability(
+        @Query("availability_status") status: String
+    ): Response<MessageResponse>
 
     // ── Reviews ───────────────────────────────────────────────────────────────
 

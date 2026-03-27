@@ -1,5 +1,6 @@
 package com.example.zariaserviceconnect.ui.provider
 
+import androidx.compose.foundation.background
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.*
@@ -265,10 +266,27 @@ fun ProviderBookingCard(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProviderProfileScreen(viewModel: MainViewModel) {
-    val profileState      by viewModel.myProviderProfile.collectAsState()
-    val snackbarHostState  = remember { SnackbarHostState() }
+    val profileState        by viewModel.myProviderProfile.collectAsState()
+    val availabilityAction  by viewModel.availabilityAction.collectAsState()
+    val snackbarHostState    = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) { viewModel.loadMyProviderProfile() }
+
+    LaunchedEffect(availabilityAction) {
+        when (availabilityAction) {
+            is UiState.Success<*> -> {
+                snackbarHostState.showSnackbar(
+                    (availabilityAction as UiState.Success<*>).data.toString())
+                viewModel.resetAvailabilityAction()
+            }
+            is UiState.Error -> {
+                snackbarHostState.showSnackbar(
+                    (availabilityAction as UiState.Error).message)
+                viewModel.resetAvailabilityAction()
+            }
+            else -> {}
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -374,6 +392,21 @@ fun ProviderProfileScreen(viewModel: MainViewModel) {
                             }
                         }
 
+                        // Availability toggle card
+                        item {
+                            val p = (profileState as UiState.Success<*>).data
+                            if (p is com.example.zariaserviceconnect.models.ProviderModel
+                                && p.status == "approved") {
+                                AvailabilityToggleCard(
+                                    currentStatus = p.availabilityStatus,
+                                    isLoading     = availabilityAction is UiState.Loading,
+                                    onStatusChange = { newStatus ->
+                                        viewModel.setAvailability(newStatus)
+                                    }
+                                )
+                            }
+                        }
+
                         // Details card
                         item {
                             Card(
@@ -433,5 +466,118 @@ private fun ProfileDetailRow(icon: ImageVector, label: String, value: String) {
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f)
         )
+    }
+}
+
+
+// ── Availability Toggle Card ──────────────────────────────────────────────────
+@Composable
+fun AvailabilityToggleCard(
+    currentStatus : String,
+    isLoading     : Boolean,
+    onStatusChange : (String) -> Unit
+) {
+    val (statusColor, statusBg, statusLabel) = when (currentStatus) {
+        "busy"    -> Triple(Color(0xFFE65100), Color(0xFFFFF3E0), "Busy")
+        "offline" -> Triple(Color(0xFF757575), Color(0xFFF5F5F5), "Offline")
+        else      -> Triple(Color(0xFF2E7D32), Color(0xFFE8F5E9), "Available")
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = statusBg)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    Modifier
+                        .size(12.dp)
+                        .background(statusColor,
+                            androidx.compose.foundation.shape.CircleShape)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    "Status: $statusLabel",
+                    fontWeight = FontWeight.Bold,
+                    fontSize   = 16.sp,
+                    color      = statusColor
+                )
+            }
+            Spacer(Modifier.height(4.dp))
+            Text(
+                when (currentStatus) {
+                    "busy"    -> "You are currently busy with a booking."
+                    "offline" -> "You are offline. Residents cannot see you."
+                    else      -> "You are available and visible to residents."
+                },
+                fontSize = 13.sp,
+                color    = Color.Gray
+            )
+            Spacer(Modifier.height(12.dp))
+
+            // Three buttons for the three statuses
+            Text("Set your status:",
+                fontSize = 13.sp, fontWeight = FontWeight.Medium)
+            Spacer(Modifier.height(8.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Available button
+                OutlinedButton(
+                    onClick  = { if (currentStatus != "available") onStatusChange("available") },
+                    modifier = Modifier.weight(1f),
+                    enabled  = !isLoading && currentStatus != "available",
+                    colors   = ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (currentStatus == "available")
+                            Color(0xFF2E7D32) else Color.Transparent,
+                        contentColor   = if (currentStatus == "available")
+                            Color.White else Color(0xFF2E7D32)
+                    )
+                ) {
+                    Text("Available", fontSize = 12.sp)
+                }
+
+                // Busy button
+                OutlinedButton(
+                    onClick  = { if (currentStatus != "busy") onStatusChange("busy") },
+                    modifier = Modifier.weight(1f),
+                    enabled  = !isLoading && currentStatus != "busy",
+                    colors   = ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (currentStatus == "busy")
+                            Color(0xFFE65100) else Color.Transparent,
+                        contentColor   = if (currentStatus == "busy")
+                            Color.White else Color(0xFFE65100)
+                    )
+                ) {
+                    Text("Busy", fontSize = 12.sp)
+                }
+
+                // Offline button
+                OutlinedButton(
+                    onClick  = { if (currentStatus != "offline") onStatusChange("offline") },
+                    modifier = Modifier.weight(1f),
+                    enabled  = !isLoading && currentStatus != "offline",
+                    colors   = ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (currentStatus == "offline")
+                            Color(0xFF757575) else Color.Transparent,
+                        contentColor   = if (currentStatus == "offline")
+                            Color.White else Color(0xFF757575)
+                    )
+                ) {
+                    Text("Offline", fontSize = 12.sp)
+                }
+            }
+
+            if (isLoading) {
+                Spacer(Modifier.height(8.dp))
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth(),
+                    color    = statusColor
+                )
+            }
+        }
     }
 }

@@ -359,6 +359,28 @@ private fun SearchResultsContent(
     }
 }
 
+// ── Availability Badge (reusable) ────────────────────────────────────────────
+@Composable
+fun AvailabilityBadge(status: String) {
+    val (color, bgColor, label) = when (status) {
+        "busy"    -> Triple(Color(0xFFE65100), Color(0xFFFFF3E0), "Busy")
+        "offline" -> Triple(Color(0xFF757575), Color(0xFFF5F5F5), "Offline")
+        else      -> Triple(Color(0xFF2E7D32), Color(0xFFE8F5E9), "Available")
+    }
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .size(8.dp)
+                .background(color, androidx.compose.foundation.shape.CircleShape)
+        )
+        Spacer(Modifier.width(4.dp))
+        Text(label,
+            color      = color,
+            fontSize   = 11.sp,
+            fontWeight = androidx.compose.ui.text.font.FontWeight.Medium)
+    }
+}
+
 // ── Search Provider Card ──────────────────────────────────────────────────────
 // Shows matched provider with category badge
 @Composable
@@ -409,6 +431,8 @@ private fun SearchProviderCard(
                 }
                 Spacer(Modifier.height(4.dp))
                 StarRatingDisplay(provider.averageRating, provider.totalReviews)
+                Spacer(Modifier.height(3.dp))
+                AvailabilityBadge(provider.availabilityStatus)
                 if (provider.description != null) {
                     Text(
                         provider.description,
@@ -553,6 +577,8 @@ fun ProviderCard(provider: ProviderModel, onClick: () -> Unit) {
                 Text(provider.category.name, color = Color.Gray, fontSize = 13.sp)
                 Spacer(Modifier.height(4.dp))
                 StarRatingDisplay(provider.averageRating, provider.totalReviews)
+                Spacer(Modifier.height(3.dp))
+                AvailabilityBadge(provider.availabilityStatus)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (provider.location != null) {
                         Icon(Icons.Default.LocationOn, null,
