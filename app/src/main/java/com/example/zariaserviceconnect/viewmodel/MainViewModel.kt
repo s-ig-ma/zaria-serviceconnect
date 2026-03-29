@@ -192,7 +192,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         phone             : String,
         password          : String,
         location          : String,
-        categoryId        : Int,
+        categoryId        : Int?,
+        serviceName       : String,
         yearsOfExperience : Int,
         description       : String
     ) {
@@ -208,6 +209,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 phone               = phone,
                 password            = password,
                 categoryId          = categoryId,
+                serviceName         = serviceName,
                 yearsOfExperience   = yearsOfExperience,
                 description         = description,
                 location            = location,

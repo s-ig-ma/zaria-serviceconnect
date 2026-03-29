@@ -485,6 +485,7 @@ private fun ProviderRegisterForm(
     var password            by remember { mutableStateOf("") }
     var passwordVisible     by remember { mutableStateOf(false) }
     var description         by remember { mutableStateOf("") }
+    var customServiceName   by remember { mutableStateOf("") }
     var yearsOfExperience   by remember { mutableStateOf("0") }
     var selectedCategoryId  by remember { mutableStateOf<Int?>(null) }
     var categoryExpanded    by remember { mutableStateOf(false) }
@@ -579,6 +580,12 @@ private fun ProviderRegisterForm(
                 placeholder = { Text("e.g. Sabon Gari, Zaria") },
                 modifier = Modifier.fillMaxWidth(), singleLine = true)
 
+            Text(
+                "Choose an existing category or enter your own service name.",
+                color = Color.Gray,
+                fontSize = 13.sp
+            )
+
             // Service Category dropdown
             val categories = when (val s = categoriesState) {
                 is UiState.Success<*> -> {
@@ -622,6 +629,24 @@ private fun ProviderRegisterForm(
                 }
             }
 
+            Text(
+                "OR",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                color = Color.Gray,
+                fontWeight = FontWeight.Medium
+            )
+
+            OutlinedTextField(
+                value         = customServiceName,
+                onValueChange = { customServiceName = it },
+                label         = { Text("Custom Service Name") },
+                placeholder   = { Text("e.g. AC Installation, POP Ceiling") },
+                leadingIcon   = { Icon(Icons.Default.Build, null) },
+                modifier      = Modifier.fillMaxWidth(),
+                singleLine    = true
+            )
+
             OutlinedTextField(
                 value         = yearsOfExperience,
                 onValueChange = { yearsOfExperience = it.filter { c -> c.isDigit() } },
@@ -663,25 +688,23 @@ private fun ProviderRegisterForm(
 
             Button(
                 onClick  = {
-                    val catId = selectedCategoryId
-                    if (catId != null) {
-                        viewModel.registerProvider(
-                            name                = name.trim(),
-                            email               = email.trim(),
-                            phone               = phone.trim(),
-                            password            = password,
-                            location            = location.trim(),
-                            categoryId          = catId,
-                            yearsOfExperience   = yearsOfExperience.toIntOrNull() ?: 0,
-                            description         = description.trim()
-                        )
-                    }
+                    viewModel.registerProvider(
+                        name                = name.trim(),
+                        email               = email.trim(),
+                        phone               = phone.trim(),
+                        password            = password,
+                        location            = location.trim(),
+                        categoryId          = selectedCategoryId,
+                        serviceName         = customServiceName.trim(),
+                        yearsOfExperience   = yearsOfExperience.toIntOrNull() ?: 0,
+                        description         = description.trim()
+                    )
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 enabled  = registerState !is UiState.Loading
                         && name.isNotBlank() && email.isNotBlank()
                         && phone.isNotBlank() && password.length >= 6
-                        && selectedCategoryId != null,
+                        && (selectedCategoryId != null || customServiceName.isNotBlank()),
                 colors   = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF2E7D32))
             ) {

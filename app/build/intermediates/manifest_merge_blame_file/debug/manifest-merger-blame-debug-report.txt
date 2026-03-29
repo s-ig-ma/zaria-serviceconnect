@@ -10,31 +10,31 @@
 10
 11    <!-- Internet permission for API calls -->
 12    <uses-permission android:name="android.permission.INTERNET" />
-12-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:5:5-67
-12-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:5:22-64
+12-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:5:5-67
+12-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:5:22-64
 13    <!-- Phone permission for calling providers -->
 14    <uses-permission android:name="android.permission.CALL_PHONE" />
-14-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:7:5-69
-14-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:7:22-66
+14-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:7:5-69
+14-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:7:22-66
 15    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-15-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:10:5-79
-15-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:10:22-76
+15-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:10:5-79
+15-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:10:22-76
 16    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-16-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:11:5-81
-16-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:11:22-78
+16-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:11:5-81
+16-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:11:22-78
 17
 18    <!-- Required for the phone dialer intent -->
 19    <queries>
-19-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:38:5-43:15
+19-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:38:5-43:15
 20        <intent>
-20-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:39:9-42:18
+20-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:39:9-42:18
 21            <action android:name="android.intent.action.DIAL" />
-21-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:13-65
-21-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:21-62
+21-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:13-65
+21-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:21-62
 22
 23            <data android:scheme="tel" />
-23-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:13-42
-23-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:19-39
+23-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:13-42
+23-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:19-39
 24        </intent>
 25    </queries>
 26
@@ -50,20 +50,20 @@
 31-->[androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
 32
 33    <application
-33-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:14:5-35:19
+33-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:14:5-35:19
 34        android:allowBackup="true"
-34-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:15:9-35
+34-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:15:9-35
 35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 35-->[androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 36        android:debuggable="true"
 37        android:extractNativeLibs="false"
 38        android:label="Zaria ServiceConnect"
-38-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:16:9-45
+38-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:16:9-45
 39        android:testOnly="true"
 40        android:theme="@style/Theme.ZariaServiceConnect"
-40-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:17:9-57
+40-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:17:9-57
 41        android:usesCleartextTraffic="true" >
-41-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:18:9-44
+41-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:18:9-44
 42
 43        <!--
 44            usesCleartextTraffic="true" allows HTTP connections (not just HTTPS).
@@ -72,22 +72,22 @@
 47        -->
 48
 49        <activity
-49-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:25:9-33:20
+49-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:25:9-33:20
 50            android:name="com.example.zariaserviceconnect.MainActivity"
-50-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:26:13-41
+50-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:26:13-41
 51            android:exported="true"
-51-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:27:13-36
+51-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:27:13-36
 52            android:windowSoftInputMode="adjustResize" >
-52-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:28:13-55
+52-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:28:13-55
 53            <intent-filter>
-53-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:29:13-32:29
+53-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:29:13-32:29
 54                <action android:name="android.intent.action.MAIN" />
-54-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:17-69
-54-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:25-66
+54-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:17-69
+54-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:25-66
 55
 56                <category android:name="android.intent.category.LAUNCHER" />
-56-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:17-77
-56-->C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:27-74
+56-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:17-77
+56-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:27-74
 57            </intent-filter>
 58        </activity>
 59        <activity

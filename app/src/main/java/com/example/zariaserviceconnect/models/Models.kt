@@ -52,7 +52,8 @@ data class CategoryModel(
 data class ProviderModel(
     val id          : Int,
     @SerializedName("user_id")      val userId     : Int,
-    @SerializedName("category_id")  val categoryId : Int,
+    @SerializedName("category_id")  val categoryId : Int?,
+    @SerializedName("service_name") val serviceName: String?,
     val description : String?,
     @SerializedName("years_of_experience") val yearsOfExperience: Int,
     val status         : String,
@@ -71,8 +72,11 @@ data class ProviderModel(
 
     @SerializedName("created_at") val createdAt : String,
     val user     : UserModel,
-    val category : CategoryModel
-)
+    val category : CategoryModel?
+) {
+    val displayServiceName: String
+        get() = serviceName?.takeIf { it.isNotBlank() } ?: category?.name ?: "General Service"
+}
 
 // ── Booking ───────────────────────────────────────────────────────────────────
 

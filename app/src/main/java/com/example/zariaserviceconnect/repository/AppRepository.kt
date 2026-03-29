@@ -60,16 +60,18 @@ class AppRepository(private val context: Context) {
 
     suspend fun registerProvider(
         name: String, email: String, phone: String, password: String,
-        categoryId: Int, yearsOfExperience: Int, description: String,
+        categoryId: Int?, serviceName: String, yearsOfExperience: Int, description: String,
         location: String, idDocumentFile: File
     ): Result<MessageResponse> = try {
         fun String.toRB() = toRequestBody("text/plain".toMediaTypeOrNull())
+        fun String?.toOptionalRB() = this?.takeIf { it.isNotBlank() }?.toRB()
         val filePart = MultipartBody.Part.createFormData(
             "id_document", idDocumentFile.name,
             idDocumentFile.asRequestBody("application/octet-stream".toMediaTypeOrNull()))
         val response = api.registerProvider(
             name.toRB(), email.toRB(), phone.toRB(), password.toRB(),
-            categoryId.toString().toRB(), yearsOfExperience.toString().toRB(),
+            categoryId?.toString()?.toRB(), serviceName.toOptionalRB(),
+            yearsOfExperience.toString().toRB(),
             description.toRB(), location.toRB(), filePart)
         if (response.isSuccessful && response.body() != null)
             Result.success(response.body()!!)

@@ -52,9 +52,9 @@ com.example.zariaserviceconnect.app-runtime-saveable-release-50 C:\Users\dell\.g
 com.example.zariaserviceconnect.app-play-services-base-18.1.0-51 C:\Users\dell\.gradle\caches\transforms-4\f5706350203cb6100b98edbb87201657\transformed\play-services-base-18.1.0\res
 com.example.zariaserviceconnect.app-material-icons-core-release-52 C:\Users\dell\.gradle\caches\transforms-4\fc365371dda480ed38100295af3717e3\transformed\material-icons-core-release\res
 com.example.zariaserviceconnect.app-ui-release-53 C:\Users\dell\.gradle\caches\transforms-4\fc44d240e3e9817f3ab94cf06849bda4\transformed\ui-release\res
-com.example.zariaserviceconnect.app-resValues-54 C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\build\generated\res\resValues\debug
-com.example.zariaserviceconnect.app-packageDebugResources-55 C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.example.zariaserviceconnect.app-packageDebugResources-56 C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.example.zariaserviceconnect.app-merged_res-57 C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\build\intermediates\merged_res\debug
-com.example.zariaserviceconnect.app-debug-58 C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\debug\res
-com.example.zariaserviceconnect.app-main-59 C:\Users\dell\Downloads\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\res
+com.example.zariaserviceconnect.app-resValues-54 C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\build\generated\res\resValues\debug
+com.example.zariaserviceconnect.app-packageDebugResources-55 C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.example.zariaserviceconnect.app-packageDebugResources-56 C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.example.zariaserviceconnect.app-merged_res-57 C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\build\intermediates\merged_res\debug
+com.example.zariaserviceconnect.app-debug-58 C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\debug\res
+com.example.zariaserviceconnect.app-main-59 C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\res

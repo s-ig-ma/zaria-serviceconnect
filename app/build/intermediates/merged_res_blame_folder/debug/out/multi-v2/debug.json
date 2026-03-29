@@ -1614,23 +1614,6 @@
             "outputFile": "com.example.zariaserviceconnect.app-merged_res-58:/values_values.arsc.flat",
             "map": [
                 {
-                    "source": "C:\\Users\\dell\\Downloads\\ZariaServiceConnect-kotlin\\ZariaServiceConnect\\app\\src\\main\\res\\values\\themes.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "96",
-                        "endOffsets": "147"
-                    },
-                    "to": {
-                        "startLines": "236",
-                        "startColumns": "4",
-                        "startOffsets": "16407",
-                        "endColumns": "95",
-                        "endOffsets": "16498"
-                    }
-                },
-                {
                     "source": "C:\\Users\\dell\\.gradle\\caches\\transforms-4\\f5706350203cb6100b98edbb87201657\\transformed\\play-services-base-18.1.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,33,46",
@@ -1827,6 +1810,23 @@
                         "endLines": "142,143,144,145,146,147,148,149,150,153,154,155,156,157,158,159,160,161,162,163,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201",
                         "endColumns": "87,85,80,83,68,64,82,105,85,13,53,68,60,68,88,94,73,96,92,97,13,90,87,95,97,63,67,86,93,66,71,71,100,108,75,68,47,65,63,56,56,71,49,53,70,70,69,68,57,75,70,73,85,49,69,64",
                         "endOffsets": "10256,10342,10423,10507,10576,10641,10724,10830,10916,11036,11090,11159,11220,11289,11378,11473,11547,11644,11737,11835,11984,12075,12163,12259,12357,12421,12489,12576,12670,12737,12809,12881,12982,13091,13167,13236,13284,13350,13414,13471,13528,13600,13650,13704,13775,13846,13916,13985,14043,14119,14190,14264,14350,14400,14470,14535"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\dell\\Downloads\\original_folders\\ZariaServiceConnect-kotlin\\ZariaServiceConnect\\app\\src\\main\\res\\values\\themes.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "96",
+                        "endOffsets": "147"
+                    },
+                    "to": {
+                        "startLines": "236",
+                        "startColumns": "4",
+                        "startOffsets": "16407",
+                        "endColumns": "95",
+                        "endOffsets": "16498"
                     }
                 },
                 {

@@ -384,7 +384,7 @@ fun ProviderProfileScreen(viewModel: MainViewModel) {
                                     maxLines   = 1,
                                     overflow   = TextOverflow.Ellipsis
                                 )
-                                Text(p.category.name, color = Color.Gray)
+                                Text(p.displayServiceName, color = Color.Gray)
                                 Spacer(Modifier.height(6.dp))
                                 if (p.status == "approved") VerifiedBadge()
                                 Spacer(Modifier.height(6.dp))

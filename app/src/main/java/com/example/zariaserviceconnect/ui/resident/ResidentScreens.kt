@@ -421,7 +421,7 @@ private fun SearchProviderCard(
                     color = PrimaryBlue.copy(alpha = 0.1f)
                 ) {
                     Text(
-                        provider.category.name,
+                        provider.displayServiceName,
                         color    = PrimaryBlue,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
@@ -574,7 +574,7 @@ fun ProviderCard(provider: ProviderModel, onClick: () -> Unit) {
                     Spacer(Modifier.width(4.dp))
                     VerifiedBadge()
                 }
-                Text(provider.category.name, color = Color.Gray, fontSize = 13.sp)
+                Text(provider.displayServiceName, color = Color.Gray, fontSize = 13.sp)
                 Spacer(Modifier.height(4.dp))
                 StarRatingDisplay(provider.averageRating, provider.totalReviews)
                 Spacer(Modifier.height(3.dp))
@@ -674,7 +674,7 @@ fun ProviderProfileScreen(
                                     fontWeight = FontWeight.Bold,
                                     maxLines   = 1,
                                     overflow   = TextOverflow.Ellipsis)
-                                Text(p.category.name, color = Color.Gray, fontSize = 15.sp)
+                                Text(p.displayServiceName, color = Color.Gray, fontSize = 15.sp)
                                 Spacer(Modifier.height(6.dp))
                                 VerifiedBadge()
                                 Spacer(Modifier.height(6.dp))
@@ -861,7 +861,7 @@ fun BookServiceScreen(
                             Column {
                                 Text(data.user.name, fontWeight = FontWeight.Bold,
                                     maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                Text(data.category.name, color = Color.Gray, fontSize = 13.sp)
+                                Text(data.displayServiceName, color = Color.Gray, fontSize = 13.sp)
                             }
                         }
                     }
@@ -1050,7 +1050,7 @@ fun ResidentBookingCard(
                 Spacer(Modifier.width(8.dp))
                 StatusChip(booking.status)
             }
-            Text(booking.provider?.category?.name ?: "", color = Color.Gray, fontSize = 13.sp)
+            Text(booking.provider?.displayServiceName ?: "", color = Color.Gray, fontSize = 13.sp)
             HorizontalDivider(Modifier.padding(vertical = 8.dp))
             Text(booking.serviceDescription, maxLines = 2, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(4.dp))
