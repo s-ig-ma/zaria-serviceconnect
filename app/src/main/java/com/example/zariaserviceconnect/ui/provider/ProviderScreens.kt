@@ -276,7 +276,7 @@ fun ProviderBookingCard(
 // ── Provider Profile Screen ───────────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProviderProfileScreen(viewModel: MainViewModel) {
+fun ProviderProfileScreen(viewModel: MainViewModel, onLogout: () -> Unit) {
     val profileState        by viewModel.myProviderProfile.collectAsState()
     val availabilityAction  by viewModel.availabilityAction.collectAsState()
     val profileAction       by viewModel.profileAction.collectAsState()
@@ -335,6 +335,11 @@ fun ProviderProfileScreen(viewModel: MainViewModel) {
         topBar = {
             TopAppBar(
                 title = { Text("My Profile") },
+                actions = {
+                    IconButton(onClick = onLogout) {
+                        Icon(Icons.Default.Logout, "Logout", tint = Color.White)
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor    = PrimaryBlue,
                     titleContentColor = Color.White

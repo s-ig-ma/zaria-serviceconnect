@@ -102,6 +102,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _complaintSubmit = MutableStateFlow<UiState<String>>(UiState.Idle)
     val complaintSubmit: StateFlow<UiState<String>> = _complaintSubmit
 
+    private val _complaintMessages = MutableStateFlow<UiState<List<MessageModel>>>(UiState.Idle)
+    val complaintMessages: StateFlow<UiState<List<MessageModel>>> = _complaintMessages
+
+    private val _messageAction = MutableStateFlow<UiState<String>>(UiState.Idle)
+    val messageAction: StateFlow<UiState<String>> = _messageAction
+
+    private val _notifications = MutableStateFlow<UiState<List<NotificationModel>>>(UiState.Idle)
+    val notifications: StateFlow<UiState<List<NotificationModel>>> = _notifications
+
+    private val _notificationAction = MutableStateFlow<UiState<String>>(UiState.Idle)
+    val notificationAction: StateFlow<UiState<String>> = _notificationAction
+
     // ── Availability (NEW) ───────────────────────────────────────────────────
     private val _availabilityAction = MutableStateFlow<UiState<String>>(UiState.Idle)
     val availabilityAction: StateFlow<UiState<String>> = _availabilityAction
@@ -496,6 +508,59 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun loadComplaintMessages(complaintId: Int, counterpartUserId: Int? = null) {
+        viewModelScope.launch {
+            _complaintMessages.value = UiState.Loading
+            val result = repo.getComplaintMessages(complaintId, counterpartUserId)
+            _complaintMessages.value = result.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message ?: "Failed to load messages.") }
+            )
+        }
+    }
+
+    fun sendComplaintMessage(recipientUserId: Int?, complaintId: Int, content: String) {
+        viewModelScope.launch {
+            _messageAction.value = UiState.Loading
+            val result = repo.sendMessage(recipientUserId, content, complaintId)
+            _messageAction.value = result.fold(
+                onSuccess = { UiState.Success("Message sent successfully.") },
+                onFailure = { UiState.Error(it.message ?: "Failed to send message.") }
+            )
+        }
+    }
+
+    fun loadNotifications() {
+        viewModelScope.launch {
+            _notifications.value = UiState.Loading
+            val result = repo.getMyNotifications()
+            _notifications.value = result.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message ?: "Failed to load notifications.") }
+            )
+        }
+    }
+
+    fun markNotificationRead(notificationId: Int) {
+        viewModelScope.launch {
+            val result = repo.markNotificationRead(notificationId)
+            _notificationAction.value = result.fold(
+                onSuccess = { UiState.Success("Notification marked as read.") },
+                onFailure = { UiState.Error(it.message ?: "Failed to update notification.") }
+            )
+        }
+    }
+
+    fun markAllNotificationsRead() {
+        viewModelScope.launch {
+            val result = repo.markAllNotificationsRead()
+            _notificationAction.value = result.fold(
+                onSuccess = { UiState.Success(it.message) },
+                onFailure = { UiState.Error(it.message ?: "Failed to update notifications.") }
+            )
+        }
+    }
+
     // ── Availability Actions (NEW) ───────────────────────────────────────────
 
     fun setAvailability(status: String) {
@@ -513,6 +578,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun resetAvailabilityAction() { _availabilityAction.value = UiState.Idle }
     fun resetProfileAction() { _profileAction.value = UiState.Idle }
+    fun resetMessageAction() { _messageAction.value = UiState.Idle }
+    fun resetNotificationAction() { _notificationAction.value = UiState.Idle }
 
     // ── Logout ────────────────────────────────────────────────────────────────
 

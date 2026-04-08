@@ -370,6 +370,53 @@ class AppRepository(private val context: Context) {
         Result.failure(Exception("Cannot connect to server."))
     }
 
+    suspend fun getComplaintMessages(
+        complaintId: Int,
+        counterpartUserId: Int? = null,
+    ): Result<List<MessageModel>> = try {
+        val response = api.getComplaintMessages(complaintId, counterpartUserId)
+        if (response.isSuccessful) Result.success(response.body() ?: emptyList())
+        else Result.failure(Exception(errorMessage(response.code(), response.errorBody()?.string())))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
+    suspend fun sendMessage(
+        recipientUserId: Int?,
+        content: String,
+        complaintId: Int?,
+    ): Result<MessageModel> = try {
+        val response = api.sendMessage(MessageCreateRequest(recipientUserId, content, complaintId))
+        if (response.isSuccessful && response.body() != null) Result.success(response.body()!!)
+        else Result.failure(Exception(errorMessage(response.code(), response.errorBody()?.string())))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
+    suspend fun getMyNotifications(): Result<List<NotificationModel>> = try {
+        val response = api.getMyNotifications()
+        if (response.isSuccessful) Result.success(response.body() ?: emptyList())
+        else Result.failure(Exception("Failed to load notifications."))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
+    suspend fun markNotificationRead(notificationId: Int): Result<NotificationModel> = try {
+        val response = api.markNotificationRead(notificationId)
+        if (response.isSuccessful && response.body() != null) Result.success(response.body()!!)
+        else Result.failure(Exception(errorMessage(response.code(), response.errorBody()?.string())))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
+    suspend fun markAllNotificationsRead(): Result<MessageResponse> = try {
+        val response = api.markAllNotificationsRead()
+        if (response.isSuccessful && response.body() != null) Result.success(response.body()!!)
+        else Result.failure(Exception(errorMessage(response.code(), response.errorBody()?.string())))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
     suspend fun logout() = TokenManager.clearAll(context)
     suspend fun getRole() = TokenManager.getRole(context)
     suspend fun isLoggedIn() = TokenManager.isLoggedIn(context)

@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import com.example.zariaserviceconnect.models.ComplaintModel
 import com.example.zariaserviceconnect.ui.auth.*
 import com.example.zariaserviceconnect.ui.provider.*
 import com.example.zariaserviceconnect.ui.resident.*
@@ -296,7 +297,12 @@ fun SplashScreen(onNavigate: (String?) -> Unit) {
         onNavigate(role)
     }
 
-    WelcomeScreen(onResidentLogin = {}, onProviderLogin = {}, onRegister = {})
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = androidx.compose.ui.Alignment.Center
+    ) {
+        Text("Zaria ServiceConnect", style = MaterialTheme.typography.headlineMedium)
+    }
 }
 
 // ── Resident Home with Bottom Nav ─────────────────────────────────────────────
@@ -308,19 +314,26 @@ fun ResidentHomeScreen(
     onNavigate : (String) -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
+    var selectedComplaint by remember { mutableStateOf<ComplaintModel?>(null) }
 
     Scaffold(
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
                     selected = selectedTab == 0,
-                    onClick  = { selectedTab = 0 },
+                    onClick  = {
+                        selectedComplaint = null
+                        selectedTab = 0
+                    },
                     icon     = { Icon(Icons.Default.Home, null) },
                     label    = { Text("Services") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 1,
-                    onClick  = { selectedTab = 1 },
+                    onClick  = {
+                        selectedComplaint = null
+                        selectedTab = 1
+                    },
                     icon     = { Icon(Icons.Default.CalendarToday, null) },
                     label    = { Text("My Bookings") }
                 )
@@ -332,7 +345,10 @@ fun ResidentHomeScreen(
                 )
                 NavigationBarItem(
                     selected = selectedTab == 3,
-                    onClick  = { selectedTab = 3 },
+                    onClick  = {
+                        selectedComplaint = null
+                        selectedTab = 3
+                    },
                     icon     = { Icon(Icons.Default.Person, null) },
                     label    = { Text("Profile") }
                 )
@@ -361,10 +377,22 @@ fun ResidentHomeScreen(
                     },
                     onBack = { selectedTab = 0 }
                 )
-                2 -> MyComplaintsScreen(
-                    viewModel = viewModel,
-                    onBack    = { selectedTab = 0 }
-                )
+                2 -> {
+                    if (selectedComplaint == null) {
+                        MyComplaintsScreen(
+                            viewModel = viewModel,
+                            onBack    = { selectedTab = 0 },
+                            viewerRole = "resident",
+                            onComplaintOpen = { selectedComplaint = it }
+                        )
+                    } else {
+                        ResidentMessagesScreen(
+                            viewModel = viewModel,
+                            complaint = selectedComplaint!!,
+                            onBack = { selectedComplaint = null }
+                        )
+                    }
+                }
                 3 -> ResidentProfileScreen(viewModel = viewModel, onLogout = onLogout)
             }
         }
@@ -376,6 +404,7 @@ fun ResidentHomeScreen(
 fun ProviderHomeScreen(viewModel: MainViewModel, onLogout: () -> Unit) {
     val context = LocalContext.current
     var selectedTab by remember { mutableIntStateOf(0) }
+    var selectedComplaint by remember { mutableStateOf<ComplaintModel?>(null) }
 
     // When provider opens the app, automatically update their location
     LaunchedEffect(Unit) {
@@ -387,15 +416,27 @@ fun ProviderHomeScreen(viewModel: MainViewModel, onLogout: () -> Unit) {
             NavigationBar {
                 NavigationBarItem(
                     selected = selectedTab == 0,
-                    onClick  = { selectedTab = 0 },
+                    onClick  = {
+                        selectedComplaint = null
+                        selectedTab = 0
+                    },
                     icon     = { Icon(Icons.Default.Work, null) },
                     label    = { Text("Job Requests") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 1,
                     onClick  = { selectedTab = 1 },
+                    icon     = { Icon(Icons.Default.Report, null) },
+                    label    = { Text("Complaints") }
+                )
+                NavigationBarItem(
+                    selected = selectedTab == 2,
+                    onClick  = {
+                        selectedComplaint = null
+                        selectedTab = 2
+                    },
                     icon     = { Icon(Icons.Default.Person, null) },
-                    label    = { Text("My Profile") }
+                    label    = { Text("Profile") }
                 )
             }
         }
@@ -403,7 +444,23 @@ fun ProviderHomeScreen(viewModel: MainViewModel, onLogout: () -> Unit) {
         Box(modifier = Modifier.padding(padding)) {
             when (selectedTab) {
                 0 -> ProviderJobsScreen(viewModel = viewModel, onLogout = onLogout)
-                1 -> ProviderProfileScreen(viewModel = viewModel)
+                1 -> {
+                    if (selectedComplaint == null) {
+                        MyComplaintsScreen(
+                            viewModel = viewModel,
+                            onBack = { selectedTab = 0 },
+                            viewerRole = "provider",
+                            onComplaintOpen = { selectedComplaint = it }
+                        )
+                    } else {
+                        ProviderMessagesScreen(
+                            viewModel = viewModel,
+                            complaint = selectedComplaint!!,
+                            onBack = { selectedComplaint = null }
+                        )
+                    }
+                }
+                2 -> ProviderProfileScreen(viewModel = viewModel, onLogout = onLogout)
             }
         }
     }

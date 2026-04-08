@@ -167,3 +167,32 @@ data class ProviderBasicModel(
     val id   : Int,
     val user : UserBasicModel
 )
+
+data class MessageCreateRequest(
+    @SerializedName("recipient_user_id") val recipientUserId: Int?,
+    val content: String,
+    @SerializedName("complaint_id") val complaintId: Int?
+)
+
+data class MessageModel(
+    val id: Int,
+    @SerializedName("complaint_id") val complaintId: Int?,
+    @SerializedName("sender_user_id") val senderUserId: Int,
+    @SerializedName("recipient_user_id") val recipientUserId: Int,
+    val content: String,
+    @SerializedName("is_read") val isRead: Boolean,
+    @SerializedName("created_at") val createdAt: String,
+    val sender: UserModel,
+    val recipient: UserModel
+)
+
+data class NotificationModel(
+    val id: Int,
+    @SerializedName("user_id") val userId: Int,
+    val title: String,
+    val message: String,
+    val type: String,
+    @SerializedName("related_id") val relatedId: Int?,
+    @SerializedName("is_read") val isRead: Boolean,
+    @SerializedName("created_at") val createdAt: String
+)

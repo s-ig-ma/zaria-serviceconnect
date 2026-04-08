@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zariaserviceconnect.models.BookingModel
 import com.example.zariaserviceconnect.models.ComplaintModel
+import com.example.zariaserviceconnect.models.MessageModel
+import com.example.zariaserviceconnect.models.NotificationModel
 import com.example.zariaserviceconnect.models.ProviderModel
 import com.example.zariaserviceconnect.models.UserModel
 import com.example.zariaserviceconnect.ui.shared.*
@@ -831,7 +833,13 @@ fun BookServiceScreen(
 
     LaunchedEffect(bookingAction) {
         when (bookingAction) {
-            is UiState.Success<*> -> { viewModel.resetBookingAction(); onSuccess() }
+            is UiState.Success<*> -> {
+                snackbarHostState.showSnackbar(
+                    (bookingAction as UiState.Success<*>).data.toString()
+                )
+                viewModel.resetBookingAction()
+                onSuccess()
+            }
             is UiState.Error      -> {
                 snackbarHostState.showSnackbar(
                     (bookingAction as UiState.Error).message)
@@ -1473,7 +1481,9 @@ fun SubmitComplaintScreen(
 @Composable
 fun MyComplaintsScreen(
     viewModel : MainViewModel,
-    onBack    : () -> Unit
+    onBack    : () -> Unit,
+    viewerRole: String = "resident",
+    onComplaintOpen: (ComplaintModel) -> Unit = {}
 ) {
     val complaintsState by viewModel.myComplaints.collectAsState()
     LaunchedEffect(Unit) { viewModel.loadMyComplaints() }
@@ -1526,7 +1536,11 @@ fun MyComplaintsScreen(
                                     color = Color.Gray, fontSize = 13.sp)
                             }
                             items(state.data) { complaint ->
-                                ComplaintCard(complaint = complaint)
+                                ComplaintCard(
+                                    complaint = complaint,
+                                    viewerRole = viewerRole,
+                                    onClick = { onComplaintOpen(complaint) }
+                                )
                             }
                             item { Spacer(Modifier.height(16.dp)) }
                         }
@@ -1540,15 +1554,26 @@ fun MyComplaintsScreen(
 
 // ── Complaint Card ────────────────────────────────────────────────────────────
 @Composable
-fun ComplaintCard(complaint: ComplaintModel) {
+fun ComplaintCard(
+    complaint: ComplaintModel,
+    viewerRole: String = "resident",
+    onClick: () -> Unit = {}
+) {
     val (statusColor, statusBg, statusLabel) = when (complaint.status) {
         "open"      -> Triple(Color(0xFFE65100), Color(0xFFFFF3E0), "OPEN")
         "in_review" -> Triple(Color(0xFF1565C0), Color(0xFFE3F2FD), "IN REVIEW")
         "resolved"  -> Triple(Color(0xFF2E7D32), Color(0xFFE8F5E9), "RESOLVED")
         else        -> Triple(Color.Gray, Color(0xFFF5F5F5), complaint.status.uppercase())
     }
+    val counterpartLabel = if (viewerRole == "provider") {
+        "Resident: ${complaint.user.name}"
+    } else {
+        "Against: ${complaint.provider.user.name}"
+    }
 
-    Card(modifier = Modifier.fillMaxWidth(),
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = RoundedCornerShape(12.dp)) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1556,7 +1581,7 @@ fun ComplaintCard(complaint: ComplaintModel) {
                 Icon(Icons.Default.Report, null, tint = Color(0xFFB71C1C),
                     modifier = Modifier.size(20.dp))
                 Spacer(Modifier.width(8.dp))
-                Text("Against: ${complaint.provider.user.name}",
+                Text(counterpartLabel,
                     fontWeight = FontWeight.Bold, fontSize = 15.sp,
                     maxLines = 1, overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f))
@@ -1569,6 +1594,22 @@ fun ComplaintCard(complaint: ComplaintModel) {
             }
             Spacer(Modifier.height(10.dp))
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.15f))
+            Spacer(Modifier.height(10.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    "Tap to open admin chat",
+                    fontSize = 12.sp,
+                    color = PrimaryBlue,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    Icons.Default.ChevronRight,
+                    null,
+                    tint = PrimaryBlue,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
             Spacer(Modifier.height(10.dp))
             Text("Your complaint:", fontSize = 12.sp, color = Color.Gray,
                 fontWeight = FontWeight.Medium)

@@ -154,4 +154,26 @@ interface ApiService {
         @Path("id") id: Int,
         @Body body: Map<String, String>
     ): Response<ComplaintModel>
+
+    @GET("messages/complaint/{complaintId}")
+    suspend fun getComplaintMessages(
+        @Path("complaintId") complaintId: Int,
+        @Query("counterpart_user_id") counterpartUserId: Int? = null
+    ): Response<List<MessageModel>>
+
+    @POST("messages/")
+    suspend fun sendMessage(
+        @Body request: MessageCreateRequest
+    ): Response<MessageModel>
+
+    @GET("notifications/my")
+    suspend fun getMyNotifications(): Response<List<NotificationModel>>
+
+    @PATCH("notifications/{notificationId}/read")
+    suspend fun markNotificationRead(
+        @Path("notificationId") notificationId: Int
+    ): Response<NotificationModel>
+
+    @PATCH("notifications/read-all")
+    suspend fun markAllNotificationsRead(): Response<MessageResponse>
 }
