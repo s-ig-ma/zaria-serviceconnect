@@ -1,5 +1,8 @@
 package com.example.zariaserviceconnect.ui.auth
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -344,6 +347,7 @@ private fun ResidentRegisterForm(
     var email           by remember { mutableStateOf("") }
     var phone           by remember { mutableStateOf("") }
     var location        by remember { mutableStateOf("") }
+    var homeAddress     by remember { mutableStateOf("") }
     var password        by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     val registerState   by viewModel.registerState.collectAsState()
@@ -418,6 +422,12 @@ private fun ResidentRegisterForm(
                 placeholder = { Text("e.g. Sabon Gari, Zaria") },
                 modifier = Modifier.fillMaxWidth(), singleLine = true)
 
+            OutlinedTextField(value = homeAddress, onValueChange = { homeAddress = it },
+                label = { Text("Home Address in Zaria") },
+                leadingIcon = { Icon(Icons.Default.Home, null) },
+                placeholder = { Text("Address providers should use for bookings") },
+                modifier = Modifier.fillMaxWidth(), maxLines = 3)
+
             OutlinedTextField(
                 value                = password,
                 onValueChange        = { password = it },
@@ -441,12 +451,13 @@ private fun ResidentRegisterForm(
                 onClick  = {
                     viewModel.registerResident(
                         name.trim(), email.trim(), phone.trim(),
-                        password, location.trim())
+                        password, location.trim(), homeAddress.trim())
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 enabled  = registerState !is UiState.Loading
                         && name.isNotBlank() && email.isNotBlank()
-                        && phone.isNotBlank() && password.length >= 6,
+                        && phone.isNotBlank() && password.length >= 6
+                        && homeAddress.isNotBlank(),
                 colors   = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
             ) {
                 if (registerState is UiState.Loading)
@@ -487,6 +498,11 @@ private fun ProviderRegisterForm(
     var description         by remember { mutableStateOf("") }
     var customServiceName   by remember { mutableStateOf("") }
     var yearsOfExperience   by remember { mutableStateOf("0") }
+    var hasShopInZaria      by remember { mutableStateOf(false) }
+    var shopAddress         by remember { mutableStateOf("") }
+    var passportPhotoUri    by remember { mutableStateOf<Uri?>(null) }
+    var idDocumentUri       by remember { mutableStateOf<Uri?>(null) }
+    var skillProofUri       by remember { mutableStateOf<Uri?>(null) }
     var selectedCategoryId  by remember { mutableStateOf<Int?>(null) }
     var categoryExpanded    by remember { mutableStateOf(false) }
     val categoriesState     by viewModel.categories.collectAsState()
@@ -495,6 +511,16 @@ private fun ProviderRegisterForm(
 
     // Load categories when screen opens
     LaunchedEffect(Unit) { viewModel.loadCategories() }
+
+    val passportPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { passportPhotoUri = it }
+    val idPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { idDocumentUri = it }
+    val skillPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { skillProofUri = it }
 
     LaunchedEffect(registerState) {
         when (registerState) {
@@ -684,6 +710,49 @@ private fun ProviderRegisterForm(
                 keyboardOptions      = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
 
+            OutlinedButton(onClick = { passportPicker.launch(arrayOf("image/*")) },
+                modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    passportPhotoUri?.lastPathSegment?.substringAfterLast("/")?.let { "Passport Photo: $it" }
+                        ?: "Select Passport Photograph"
+                )
+            }
+
+            OutlinedButton(onClick = { idPicker.launch(arrayOf("image/*", "application/pdf")) },
+                modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    idDocumentUri?.lastPathSegment?.substringAfterLast("/")?.let { "ID Document: $it" }
+                        ?: "Select ID Document"
+                )
+            }
+
+            OutlinedButton(onClick = { skillPicker.launch(arrayOf("image/*", "application/pdf")) },
+                modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    skillProofUri?.lastPathSegment?.substringAfterLast("/")?.let { "Skill Proof: $it" }
+                        ?: "Select Skill Proof / Certificate"
+                )
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(checked = hasShopInZaria, onCheckedChange = {
+                    hasShopInZaria = it
+                    if (!it) shopAddress = ""
+                })
+                Text("I own a shop in Zaria")
+            }
+
+            if (hasShopInZaria) {
+                OutlinedTextField(
+                    value = shopAddress,
+                    onValueChange = { shopAddress = it },
+                    label = { Text("Shop Address in Zaria") },
+                    leadingIcon = { Icon(Icons.Default.Storefront, null) },
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 3
+                )
+            }
+
             Spacer(Modifier.height(8.dp))
 
             Button(
@@ -697,14 +766,21 @@ private fun ProviderRegisterForm(
                         categoryId          = selectedCategoryId,
                         serviceName         = customServiceName.trim(),
                         yearsOfExperience   = yearsOfExperience.toIntOrNull() ?: 0,
-                        description         = description.trim()
+                        description         = description.trim(),
+                        hasShopInZaria      = hasShopInZaria,
+                        shopAddress         = shopAddress.trim(),
+                        passportPhotoUri    = passportPhotoUri,
+                        idDocumentUri       = idDocumentUri,
+                        skillProofUri       = skillProofUri
                     )
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 enabled  = registerState !is UiState.Loading
                         && name.isNotBlank() && email.isNotBlank()
                         && phone.isNotBlank() && password.length >= 6
-                        && (selectedCategoryId != null || customServiceName.isNotBlank()),
+                        && (selectedCategoryId != null || customServiceName.isNotBlank())
+                        && passportPhotoUri != null && idDocumentUri != null && skillProofUri != null
+                        && (!hasShopInZaria || shopAddress.isNotBlank()),
                 colors   = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF2E7D32))
             ) {

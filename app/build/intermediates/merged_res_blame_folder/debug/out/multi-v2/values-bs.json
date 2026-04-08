@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.zariaserviceconnect.app-mergeDebugResources-56:/values-bs/values-bs.xml",
+            "outputFile": "com.example.zariaserviceconnect.app-mergeDebugResources-58:/values-bs/values-bs.xml",
             "map": [
                 {
                     "source": "C:\\Users\\dell\\.gradle\\caches\\transforms-4\\752ac7a5c3203c936c717734bb7968ab\\transformed\\play-services-basement-18.1.0\\res\\values-bs\\values.xml",

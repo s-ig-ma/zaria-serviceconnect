@@ -19,7 +19,8 @@ data class RegisterResidentRequest(
     val email    : String,
     val phone    : String,
     val password : String,
-    val location : String?
+    val location : String?,
+    @SerializedName("home_address") val homeAddress: String?
 )
 
 data class MessageResponse(val message: String, val success: Boolean)
@@ -32,6 +33,7 @@ data class UserModel(
     val email    : String,
     val phone    : String,
     val location : String?,
+    @SerializedName("home_address") val homeAddress: String?,
     val role     : String,
     @SerializedName("is_active")     val isActive    : Boolean,
     @SerializedName("profile_photo") val profilePhoto: String?,
@@ -63,6 +65,11 @@ data class ProviderModel(
     val latitude   : Double?,
     val longitude  : Double?,
     @SerializedName("distance_km") val distanceKm : Double?,
+    @SerializedName("passport_photo_path") val passportPhotoPath: String?,
+    @SerializedName("id_document_path") val idDocumentPath: String?,
+    @SerializedName("skill_proof_path") val skillProofPath: String?,
+    @SerializedName("has_shop_in_zaria") val hasShopInZaria: Boolean = false,
+    @SerializedName("shop_address") val shopAddress: String?,
 
     // NEW: availability status
     // "available" = ready for bookings (green)
@@ -85,6 +92,7 @@ data class BookingCreateRequest(
     @SerializedName("service_description") val serviceDescription: String,
     @SerializedName("scheduled_date")      val scheduledDate     : String,
     @SerializedName("scheduled_time")      val scheduledTime     : String,
+    @SerializedName("service_address")     val serviceAddress    : String?,
     val notes : String?
 )
 
@@ -100,6 +108,7 @@ data class BookingModel(
     @SerializedName("service_description") val serviceDescription: String,
     @SerializedName("scheduled_date")      val scheduledDate     : String,
     @SerializedName("scheduled_time")      val scheduledTime     : String,
+    @SerializedName("service_address")     val serviceAddress    : String?,
     val status         : String,
     val notes          : String?,
     @SerializedName("provider_notes") val providerNotes : String?,

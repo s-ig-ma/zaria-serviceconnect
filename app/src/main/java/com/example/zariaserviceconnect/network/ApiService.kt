@@ -30,11 +30,25 @@ interface ApiService {
         @Part("years_of_experience") yearsOfExperience: RequestBody,
         @Part("description") description: RequestBody,
         @Part("location") location: RequestBody,
-        @Part idDocument: MultipartBody.Part
+        @Part("has_shop_in_zaria") hasShopInZaria: RequestBody,
+        @Part("shop_address") shopAddress: RequestBody?,
+        @Part passportPhoto: MultipartBody.Part,
+        @Part idDocument: MultipartBody.Part,
+        @Part skillProof: MultipartBody.Part
     ): Response<MessageResponse>
 
     @GET("auth/me")
     suspend fun getMyProfile(): Response<UserModel>
+
+    @Multipart
+    @PATCH("users/me")
+    suspend fun updateMyUserProfile(
+        @Part("name") name: RequestBody?,
+        @Part("phone") phone: RequestBody?,
+        @Part("location") location: RequestBody?,
+        @Part("home_address") homeAddress: RequestBody?,
+        @Part profilePhoto: MultipartBody.Part?
+    ): Response<UserModel>
 
     // ── Categories ────────────────────────────────────────────────────────────
 
@@ -62,6 +76,23 @@ interface ApiService {
 
     @GET("providers/me/profile")
     suspend fun getMyProviderProfile(): Response<ProviderModel>
+
+    @Multipart
+    @PATCH("providers/me/profile")
+    suspend fun updateMyProviderProfile(
+        @Part("name") name: RequestBody?,
+        @Part("phone") phone: RequestBody?,
+        @Part("location") location: RequestBody?,
+        @Part("service_name") serviceName: RequestBody?,
+        @Part("years_of_experience") yearsOfExperience: RequestBody?,
+        @Part("description") description: RequestBody?,
+        @Part("has_shop_in_zaria") hasShopInZaria: RequestBody?,
+        @Part("shop_address") shopAddress: RequestBody?,
+        @Part profilePhoto: MultipartBody.Part?,
+        @Part passportPhoto: MultipartBody.Part?,
+        @Part idDocument: MultipartBody.Part?,
+        @Part skillProof: MultipartBody.Part?
+    ): Response<ProviderModel>
 
     @PATCH("providers/me/location")
     suspend fun updateMyLocation(

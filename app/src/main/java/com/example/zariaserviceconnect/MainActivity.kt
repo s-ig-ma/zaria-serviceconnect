@@ -119,6 +119,9 @@ fun ZariaApp() {
                 role           = role,
                 viewModel      = viewModel,
                 onLoginSuccess = { r ->
+                    if (r == "resident") {
+                        viewModel.fetchUserLocation(context)
+                    }
                     val dest = if (r == "provider") Routes.PROVIDER_HOME
                                else Routes.RESIDENT_HOME
                     navController.navigate(dest) {
@@ -327,6 +330,12 @@ fun ResidentHomeScreen(
                     icon     = { Icon(Icons.Default.Report, null) },
                     label    = { Text("Complaints") }
                 )
+                NavigationBarItem(
+                    selected = selectedTab == 3,
+                    onClick  = { selectedTab = 3 },
+                    icon     = { Icon(Icons.Default.Person, null) },
+                    label    = { Text("Profile") }
+                )
             }
         }
     ) { padding ->
@@ -356,6 +365,7 @@ fun ResidentHomeScreen(
                     viewModel = viewModel,
                     onBack    = { selectedTab = 0 }
                 )
+                3 -> ResidentProfileScreen(viewModel = viewModel, onLogout = onLogout)
             }
         }
     }

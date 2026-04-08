@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.zariaserviceconnect.app-mergeDebugResources-56:/values-gu/values-gu.xml",
+            "outputFile": "com.example.zariaserviceconnect.app-mergeDebugResources-58:/values-gu/values-gu.xml",
             "map": [
                 {
                     "source": "C:\\Users\\dell\\.gradle\\caches\\transforms-4\\3f260eac02cb3dc8ae181ac5f5fec965\\transformed\\material3-release\\res\\values-gu\\values-gu.xml",

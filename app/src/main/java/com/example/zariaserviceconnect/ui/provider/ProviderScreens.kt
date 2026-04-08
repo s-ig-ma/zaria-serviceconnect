@@ -3,6 +3,8 @@ package com.example.zariaserviceconnect.ui.provider
 import androidx.compose.foundation.background
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -122,7 +124,7 @@ fun ProviderJobsScreen(
                                     },
                                     onComplete = {
                                         viewModel.updateBookingStatus(
-                                            booking.id, "completed")
+                                            booking.id, "completion_requested")
                                     }
                                 )
                             }
@@ -154,7 +156,7 @@ fun ProviderBookingCard(
     ) {
         Column(Modifier.padding(14.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                AvatarCircle(residentName, size = 44, color = PrimaryBlue)
+                AvatarCircle(residentName, size = 44, color = PrimaryBlue, imagePath = booking.resident?.profilePhoto)
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     Text(residentName,
@@ -194,6 +196,11 @@ fun ProviderBookingCard(
                     fontSize = 13.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis)
+            }
+            if (booking.serviceAddress != null) {
+                Spacer(Modifier.height(4.dp))
+                Text("Address: ${booking.serviceAddress}",
+                    color = Color.Gray, fontSize = 13.sp, maxLines = 3)
             }
 
             Spacer(Modifier.height(12.dp))
@@ -235,8 +242,12 @@ fun ProviderBookingCard(
                         Icon(Icons.Default.DoneAll, null,
                             modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(6.dp))
-                        Text("Mark as Completed")
+                        Text("Request Completion")
                     }
+                }
+                "completion_requested" -> {
+                    Text("Waiting for resident confirmation.",
+                        color = Color.Gray, fontSize = 13.sp)
                 }
             }
 
@@ -268,7 +279,25 @@ fun ProviderBookingCard(
 fun ProviderProfileScreen(viewModel: MainViewModel) {
     val profileState        by viewModel.myProviderProfile.collectAsState()
     val availabilityAction  by viewModel.availabilityAction.collectAsState()
+    val profileAction       by viewModel.profileAction.collectAsState()
     val snackbarHostState    = remember { SnackbarHostState() }
+    var editName by remember { mutableStateOf("") }
+    var editPhone by remember { mutableStateOf("") }
+    var editLocation by remember { mutableStateOf("") }
+    var editServiceName by remember { mutableStateOf("") }
+    var editExperience by remember { mutableStateOf("0") }
+    var editDescription by remember { mutableStateOf("") }
+    var hasShopInZaria by remember { mutableStateOf(false) }
+    var shopAddress by remember { mutableStateOf("") }
+    var formInitialized by remember { mutableStateOf(false) }
+    var profilePhotoUri by remember { mutableStateOf<Uri?>(null) }
+    var passportPhotoUri by remember { mutableStateOf<Uri?>(null) }
+    var idDocumentUri by remember { mutableStateOf<Uri?>(null) }
+    var skillProofUri by remember { mutableStateOf<Uri?>(null) }
+    val profilePhotoPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { profilePhotoUri = it }
+    val passportPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { passportPhotoUri = it }
+    val idPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { idDocumentUri = it }
+    val skillPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { skillProofUri = it }
 
     LaunchedEffect(Unit) { viewModel.loadMyProviderProfile() }
 
@@ -283,6 +312,20 @@ fun ProviderProfileScreen(viewModel: MainViewModel) {
                 snackbarHostState.showSnackbar(
                     (availabilityAction as UiState.Error).message)
                 viewModel.resetAvailabilityAction()
+            }
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(profileAction) {
+        when (profileAction) {
+            is UiState.Success<*> -> {
+                snackbarHostState.showSnackbar((profileAction as UiState.Success<*>).data.toString())
+                viewModel.resetProfileAction()
+            }
+            is UiState.Error -> {
+                snackbarHostState.showSnackbar((profileAction as UiState.Error).message)
+                viewModel.resetProfileAction()
             }
             else -> {}
         }
@@ -312,6 +355,17 @@ fun ProviderProfileScreen(viewModel: MainViewModel) {
                 }
                 is UiState.Success -> {
                     val p = state.data
+                    if (!formInitialized) {
+                        editName = p.user.name
+                        editPhone = p.user.phone
+                        editLocation = p.location ?: ""
+                        editServiceName = p.serviceName ?: ""
+                        editExperience = p.yearsOfExperience.toString()
+                        editDescription = p.description ?: ""
+                        hasShopInZaria = p.hasShopInZaria
+                        shopAddress = p.shopAddress ?: ""
+                        formInitialized = true
+                    }
 
                     // LazyColumn scrolls — no overflow possible
                     LazyColumn(
@@ -375,7 +429,7 @@ fun ProviderProfileScreen(viewModel: MainViewModel) {
                                     .padding(20.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                AvatarCircle(p.user.name, size = 80)
+                                AvatarCircle(p.user.name, size = 80, imagePath = p.user.profilePhoto)
                                 Spacer(Modifier.height(10.dp))
                                 Text(
                                     p.user.name,
@@ -429,6 +483,11 @@ fun ProviderProfileScreen(viewModel: MainViewModel) {
                                     if (p.location != null)
                                         ProfileDetailRow(Icons.Default.LocationOn,
                                             "Location", p.location)
+                                    ProfileDetailRow(Icons.Default.Storefront,
+                                        "Shop in Zaria", if (p.hasShopInZaria) "Yes" else "No")
+                                    if (p.shopAddress != null)
+                                        ProfileDetailRow(Icons.Default.Home,
+                                            "Shop Address", p.shopAddress)
                                     ProfileDetailRow(Icons.Default.VerifiedUser,
                                         "Status", p.status.uppercase())
                                     if (p.description != null) {
@@ -438,6 +497,67 @@ fun ProviderProfileScreen(viewModel: MainViewModel) {
                                         Text(p.description,
                                             color    = Color.Gray,
                                             fontSize = 14.sp)
+                                    }
+                                }
+                            }
+                        }
+
+                        item {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                            ) {
+                                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    Text("Edit Profile", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                    OutlinedTextField(value = editName, onValueChange = { editName = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Full Name") })
+                                    OutlinedTextField(value = editPhone, onValueChange = { editPhone = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Phone") })
+                                    OutlinedTextField(value = editLocation, onValueChange = { editLocation = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Location") })
+                                    OutlinedTextField(value = editServiceName, onValueChange = { editServiceName = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Service Name") })
+                                    OutlinedTextField(value = editExperience, onValueChange = { editExperience = it.filter(Char::isDigit) },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Years of Experience") })
+                                    OutlinedTextField(value = editDescription, onValueChange = { editDescription = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Description") }, maxLines = 3)
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Checkbox(checked = hasShopInZaria, onCheckedChange = {
+                                            hasShopInZaria = it
+                                            if (!it) shopAddress = ""
+                                        })
+                                        Text("I own a shop in Zaria")
+                                    }
+                                    if (hasShopInZaria) {
+                                        OutlinedTextField(value = shopAddress, onValueChange = { shopAddress = it },
+                                            modifier = Modifier.fillMaxWidth(), label = { Text("Shop Address") })
+                                    }
+                                    OutlinedButton(onClick = { profilePhotoPicker.launch(arrayOf("image/*")) },
+                                        modifier = Modifier.fillMaxWidth()) { Text("Change Profile Photo") }
+                                    OutlinedButton(onClick = { passportPicker.launch(arrayOf("image/*")) },
+                                        modifier = Modifier.fillMaxWidth()) { Text("Update Passport Photo") }
+                                    OutlinedButton(onClick = { idPicker.launch(arrayOf("image/*", "application/pdf")) },
+                                        modifier = Modifier.fillMaxWidth()) { Text("Update ID Document") }
+                                    OutlinedButton(onClick = { skillPicker.launch(arrayOf("image/*", "application/pdf")) },
+                                        modifier = Modifier.fillMaxWidth()) { Text("Update Skill Proof") }
+                                    Button(onClick = {
+                                        viewModel.updateMyProviderProfile(
+                                            editName.trim(),
+                                            editPhone.trim(),
+                                            editLocation.trim(),
+                                            editServiceName.trim(),
+                                            editExperience.toIntOrNull() ?: 0,
+                                            editDescription.trim(),
+                                            hasShopInZaria,
+                                            shopAddress.trim(),
+                                            profilePhotoUri,
+                                            passportPhotoUri,
+                                            idDocumentUri,
+                                            skillProofUri
+                                        )
+                                    }, modifier = Modifier.fillMaxWidth()) {
+                                        Text("Save Profile Changes")
                                     }
                                 }
                             }

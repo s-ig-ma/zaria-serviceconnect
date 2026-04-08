@@ -2,6 +2,7 @@ package com.example.zariaserviceconnect.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.zariaserviceconnect.models.*
@@ -61,6 +62,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _myProviderProfile = MutableStateFlow<UiState<ProviderModel>>(UiState.Idle)
     val myProviderProfile: StateFlow<UiState<ProviderModel>> = _myProviderProfile
+
+    private val _myUserProfile = MutableStateFlow<UiState<UserModel>>(UiState.Idle)
+    val myUserProfile: StateFlow<UiState<UserModel>> = _myUserProfile
+
+    private val _profileAction = MutableStateFlow<UiState<String>>(UiState.Idle)
+    val profileAction: StateFlow<UiState<String>> = _profileAction
 
     // ── Search ────────────────────────────────────────────────────────────────
     private val _searchQuery   = MutableStateFlow("")
@@ -174,11 +181,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun registerResident(
         name: String, email: String, phone: String,
-        password: String, location: String
+        password: String, location: String, homeAddress: String
     ) {
         viewModelScope.launch {
             _registerState.value = UiState.Loading
-            val result = repo.registerResident(name, email, phone, password, location)
+            val result = repo.registerResident(name, email, phone, password, location, homeAddress)
             _registerState.value = result.fold(
                 onSuccess = { UiState.Success(it.message) },
                 onFailure = { UiState.Error(it.message ?: "Registration failed") }
@@ -195,14 +202,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         categoryId        : Int?,
         serviceName       : String,
         yearsOfExperience : Int,
-        description       : String
+        description       : String,
+        hasShopInZaria    : Boolean,
+        shopAddress       : String,
+        passportPhotoUri  : Uri?,
+        idDocumentUri     : Uri?,
+        skillProofUri     : Uri?
     ) {
         viewModelScope.launch {
             _registerState.value = UiState.Loading
-            // Provider registration requires a file upload for ID document
-            // For now we create a dummy empty file since the form doesnt collect it
-            val dummyFile = java.io.File.createTempFile("id_doc", ".txt")
-            dummyFile.writeText("ID Document")
+            if (passportPhotoUri == null || idDocumentUri == null || skillProofUri == null) {
+                _registerState.value = UiState.Error("Please select all required verification files.")
+                return@launch
+            }
             val result = repo.registerProvider(
                 name                = name,
                 email               = email,
@@ -213,13 +225,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 yearsOfExperience   = yearsOfExperience,
                 description         = description,
                 location            = location,
-                idDocumentFile      = dummyFile
+                hasShopInZaria      = hasShopInZaria,
+                shopAddress         = shopAddress,
+                passportPhotoUri    = passportPhotoUri,
+                idDocumentUri       = idDocumentUri,
+                skillProofUri       = skillProofUri
             )
             _registerState.value = result.fold(
                 onSuccess = { UiState.Success(it.message) },
                 onFailure = { UiState.Error(it.message ?: "Registration failed") }
             )
-            dummyFile.delete()
         }
     }
 
@@ -311,6 +326,79 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun loadMyUserProfile() {
+        viewModelScope.launch {
+            _myUserProfile.value = UiState.Loading
+            val result = repo.getMyProfile()
+            _myUserProfile.value = result.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message ?: "Could not load profile") }
+            )
+        }
+    }
+
+    fun updateMyUserProfile(
+        name: String,
+        phone: String,
+        location: String,
+        homeAddress: String,
+        profilePhotoUri: Uri?,
+    ) {
+        viewModelScope.launch {
+            _profileAction.value = UiState.Loading
+            val result = repo.updateMyUserProfile(name, phone, location, homeAddress, profilePhotoUri)
+            _profileAction.value = result.fold(
+                onSuccess = {
+                    _userName.value = it.name
+                    _myUserProfile.value = UiState.Success(it)
+                    UiState.Success("Profile updated successfully.")
+                },
+                onFailure = { UiState.Error(it.message ?: "Could not update profile") }
+            )
+        }
+    }
+
+    fun updateMyProviderProfile(
+        name: String,
+        phone: String,
+        location: String,
+        serviceName: String,
+        yearsOfExperience: Int,
+        description: String,
+        hasShopInZaria: Boolean,
+        shopAddress: String,
+        profilePhotoUri: Uri?,
+        passportPhotoUri: Uri?,
+        idDocumentUri: Uri?,
+        skillProofUri: Uri?,
+    ) {
+        viewModelScope.launch {
+            _profileAction.value = UiState.Loading
+            val result = repo.updateMyProviderProfile(
+                name,
+                phone,
+                location,
+                serviceName,
+                yearsOfExperience,
+                description,
+                hasShopInZaria,
+                shopAddress,
+                profilePhotoUri,
+                passportPhotoUri,
+                idDocumentUri,
+                skillProofUri
+            )
+            _profileAction.value = result.fold(
+                onSuccess = {
+                    _userName.value = it.user.name
+                    _myProviderProfile.value = UiState.Success(it)
+                    UiState.Success("Profile updated successfully.")
+                },
+                onFailure = { UiState.Error(it.message ?: "Could not update provider profile") }
+            )
+        }
+    }
+
     // ── Booking Actions ───────────────────────────────────────────────────────
 
     fun loadResidentBookings() {
@@ -337,11 +425,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun createBooking(
         providerId: Int, description: String,
-        date: String, time: String, notes: String?
+        date: String, time: String, serviceAddress: String, notes: String?
     ) {
         viewModelScope.launch {
             _bookingAction.value = UiState.Loading
-            val result = repo.createBooking(providerId, description, date, time, notes)
+            val result = repo.createBooking(providerId, description, date, time, serviceAddress, notes)
             _bookingAction.value = result.fold(
                 onSuccess = { UiState.Success("Booking request sent successfully!") },
                 onFailure = { UiState.Error(it.message ?: "Booking failed") }
@@ -424,6 +512,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun resetAvailabilityAction() { _availabilityAction.value = UiState.Idle }
+    fun resetProfileAction() { _profileAction.value = UiState.Idle }
 
     // ── Logout ────────────────────────────────────────────────────────────────
 

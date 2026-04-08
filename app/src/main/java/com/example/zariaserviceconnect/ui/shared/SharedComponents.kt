@@ -10,10 +10,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.example.zariaserviceconnect.network.RetrofitClient
 
 val PrimaryBlue  = Color(0xFF1565C0)
 val AccentGreen  = Color(0xFF00897B)
@@ -49,7 +53,20 @@ fun ErrorView(message: String, onRetry: (() -> Unit)? = null) {
 
 // ── Avatar circle with initials ───────────────────────────────────────────────
 @Composable
-fun AvatarCircle(name: String, size: Int = 48, color: Color = PrimaryBlue) {
+fun AvatarCircle(name: String, size: Int = 48, color: Color = PrimaryBlue, imagePath: String? = null) {
+    if (!imagePath.isNullOrBlank()) {
+        val imageUrl = if (imagePath.startsWith("http")) imagePath else "${RetrofitClient.BASE_URL.trimEnd('/')}$imagePath"
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = name,
+            modifier = Modifier
+                .size(size.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop
+        )
+        return
+    }
+
     Box(
         modifier = Modifier
             .size(size.dp)
@@ -81,6 +98,7 @@ fun StatusChip(status: String) {
     val (bg, fg) = when (status.lowercase()) {
         "pending"   -> Color(0xFFFFF3E0) to Color(0xFFF57C00)
         "accepted"  -> Color(0xFFE3F2FD) to Color(0xFF1565C0)
+        "completion_requested" -> Color(0xFFE8EAF6) to Color(0xFF3949AB)
         "completed" -> Color(0xFFE8F5E9) to Color(0xFF2E7D32)
         "cancelled" -> Color(0xFFF5F5F5) to Color(0xFF757575)
         "declined"  -> Color(0xFFFFEBEE) to Color(0xFFC62828)

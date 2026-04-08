@@ -2,6 +2,8 @@ package com.example.zariaserviceconnect.ui.resident
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.zariaserviceconnect.models.BookingModel
 import com.example.zariaserviceconnect.models.ComplaintModel
 import com.example.zariaserviceconnect.models.ProviderModel
+import com.example.zariaserviceconnect.models.UserModel
 import com.example.zariaserviceconnect.ui.shared.*
 import com.example.zariaserviceconnect.viewmodel.MainViewModel
 import com.example.zariaserviceconnect.viewmodel.UiState
@@ -400,7 +403,7 @@ private fun SearchProviderCard(
             Modifier.padding(14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AvatarCircle(name = provider.user.name, size = 52)
+            AvatarCircle(name = provider.user.name, size = 52, imagePath = provider.user.profilePhoto)
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -561,7 +564,7 @@ fun ProviderCard(provider: ProviderModel, onClick: () -> Unit) {
             .clickable { onClick() }
     ) {
         Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-            AvatarCircle(name = provider.user.name, size = 52)
+            AvatarCircle(name = provider.user.name, size = 52, imagePath = provider.user.profilePhoto)
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -667,7 +670,7 @@ fun ProviderProfileScreen(
                                     .padding(20.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                AvatarCircle(name = p.user.name, size = 80)
+                                AvatarCircle(name = p.user.name, size = 80, imagePath = p.user.profilePhoto)
                                 Spacer(Modifier.height(10.dp))
                                 Text(p.user.name,
                                     fontSize   = 22.sp,
@@ -803,15 +806,28 @@ fun BookServiceScreen(
     var description  by remember { mutableStateOf("") }
     var date         by remember { mutableStateOf("") }
     var selectedTime by remember { mutableStateOf("") }
+    var serviceAddress by remember { mutableStateOf("") }
     var notes        by remember { mutableStateOf("") }
     val bookingAction  by viewModel.bookingAction.collectAsState()
     val providerState  by viewModel.selectedProvider.collectAsState()
+    val profileState   by viewModel.myUserProfile.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     val timeSlots = listOf(
         "8:00 AM","9:00 AM","10:00 AM","11:00 AM","12:00 PM",
         "1:00 PM","2:00 PM","3:00 PM","4:00 PM","5:00 PM"
     )
+
+    LaunchedEffect(Unit) { viewModel.loadMyUserProfile() }
+
+    LaunchedEffect(profileState) {
+        if (profileState is UiState.Success<*>) {
+            val profile = (profileState as UiState.Success<*>).data
+            if (profile is UserModel && serviceAddress.isBlank()) {
+                serviceAddress = profile.homeAddress ?: ""
+            }
+        }
+    }
 
     LaunchedEffect(bookingAction) {
         when (bookingAction) {
@@ -856,12 +872,14 @@ fun BookServiceScreen(
                         containerColor = PrimaryBlue.copy(alpha = 0.07f))) {
                         Row(Modifier.padding(12.dp),
                             verticalAlignment = Alignment.CenterVertically) {
-                            AvatarCircle(data.user.name, size = 44, color = PrimaryBlue)
+                            AvatarCircle(data.user.name, size = 44, color = PrimaryBlue, imagePath = data.user.profilePhoto)
                             Spacer(Modifier.width(10.dp))
                             Column {
                                 Text(data.user.name, fontWeight = FontWeight.Bold,
                                     maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 Text(data.displayServiceName, color = Color.Gray, fontSize = 13.sp)
+                                Text("Availability: ${data.availabilityStatus}",
+                                    color = Color.Gray, fontSize = 12.sp)
                             }
                         }
                     }
@@ -916,20 +934,30 @@ fun BookServiceScreen(
                 placeholder = { Text("e.g. Gate code is 1234") },
                 maxLines = 2
             )
+            Spacer(Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = serviceAddress, onValueChange = { serviceAddress = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("Home Address for This Booking") },
+                placeholder = { Text("This auto-fills from your profile, but you can change it") },
+                maxLines = 3
+            )
             Spacer(Modifier.height(28.dp))
 
             Button(
                 onClick = {
                     viewModel.createBooking(
                         providerId, description.trim(), date.trim(),
-                        selectedTime, notes.trim().ifEmpty { null }
+                        selectedTime, serviceAddress.trim(), notes.trim().ifEmpty { null }
                     )
                 },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 enabled  = bookingAction !is UiState.Loading
                         && description.isNotBlank()
                         && date.isNotBlank()
-                        && selectedTime.isNotEmpty(),
+                        && selectedTime.isNotEmpty()
+                        && serviceAddress.isNotBlank(),
                 colors   = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
             ) {
                 if (bookingAction is UiState.Loading)
@@ -963,7 +991,7 @@ fun ResidentBookingsScreen(
     LaunchedEffect(Unit) { viewModel.loadResidentBookings() }
     LaunchedEffect(bookingAction) {
         if (bookingAction is UiState.Success<*>) {
-            snackbarHostState.showSnackbar("Booking cancelled.")
+            snackbarHostState.showSnackbar((bookingAction as UiState.Success<*>).data.toString())
             viewModel.resetBookingAction()
             viewModel.loadResidentBookings()
         }
@@ -1015,6 +1043,10 @@ fun ResidentBookingsScreen(
                                         viewModel.updateBookingStatus(
                                             booking.id, "cancelled")
                                     },
+                                    onConfirmCompletion = {
+                                        viewModel.updateBookingStatus(
+                                            booking.id, "completed")
+                                    },
                                     onReview    = {
                                         onLeaveReview(booking.id, providerName)
                                     },
@@ -1036,6 +1068,7 @@ fun ResidentBookingsScreen(
 fun ResidentBookingCard(
     booking     : BookingModel,
     onCancel    : () -> Unit,
+    onConfirmCompletion : () -> Unit,
     onReview    : () -> Unit,
     onComplaint : () -> Unit
 ) {
@@ -1066,6 +1099,11 @@ fun ResidentBookingCard(
                 Text("Provider note: ${booking.providerNotes}",
                     fontSize = 13.sp, color = Color(0xFF5D4037), maxLines = 2)
             }
+            if (booking.serviceAddress != null) {
+                Spacer(Modifier.height(4.dp))
+                Text("Address: ${booking.serviceAddress}",
+                    fontSize = 13.sp, color = Color.Gray, maxLines = 3)
+            }
             when (booking.status) {
                 "pending" -> {
                     Spacer(Modifier.height(10.dp))
@@ -1074,6 +1112,12 @@ fun ResidentBookingCard(
                         Icon(Icons.Default.Cancel, null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(4.dp))
                         Text("Cancel Booking")
+                    }
+                }
+                "completion_requested" -> {
+                    Spacer(Modifier.height(10.dp))
+                    Button(onClick = onConfirmCompletion, modifier = Modifier.fillMaxWidth()) {
+                        Text("Confirm Satisfaction")
                     }
                 }
                 "completed" -> {
@@ -1093,6 +1137,123 @@ fun ResidentBookingCard(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ResidentProfileScreen(
+    viewModel: MainViewModel,
+    onLogout: () -> Unit
+) {
+    val profileState by viewModel.myUserProfile.collectAsState()
+    val profileAction by viewModel.profileAction.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    var name by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var location by remember { mutableStateOf("") }
+    var homeAddress by remember { mutableStateOf("") }
+    var profilePhotoUri by remember { mutableStateOf<Uri?>(null) }
+    var formInitialized by remember { mutableStateOf(false) }
+    val profilePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
+        profilePhotoUri = it
+    }
+
+    LaunchedEffect(Unit) { viewModel.loadMyUserProfile() }
+
+    LaunchedEffect(profileAction) {
+        when (profileAction) {
+            is UiState.Success<*> -> {
+                snackbarHostState.showSnackbar((profileAction as UiState.Success<*>).data.toString())
+                viewModel.resetProfileAction()
+            }
+            is UiState.Error -> {
+                snackbarHostState.showSnackbar((profileAction as UiState.Error).message)
+                viewModel.resetProfileAction()
+            }
+            else -> {}
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("My Profile") },
+                actions = {
+                    IconButton(onClick = onLogout) {
+                        Icon(Icons.Default.Logout, "Logout", tint = Color.White)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = PrimaryBlue,
+                    titleContentColor = Color.White
+                )
+            )
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { padding ->
+        Box(Modifier.fillMaxSize().padding(padding)) {
+            when (val state = profileState) {
+                is UiState.Loading -> LoadingView()
+                is UiState.Error -> ErrorView(state.message) { viewModel.loadMyUserProfile() }
+                is UiState.Success -> {
+                    val profile = state.data
+                    if (!formInitialized) {
+                        name = profile.name
+                        phone = profile.phone
+                        location = profile.location ?: ""
+                        homeAddress = profile.homeAddress ?: ""
+                        formInitialized = true
+                    }
+
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        item {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.fillMaxWidth()) {
+                                AvatarCircle(profile.name, size = 84, imagePath = profile.profilePhoto)
+                                Spacer(Modifier.height(10.dp))
+                                Text(profile.name, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                                Text(profile.email, color = Color.Gray, fontSize = 13.sp)
+                            }
+                        }
+                        item {
+                            Card(Modifier.fillMaxWidth()) {
+                                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    OutlinedTextField(value = name, onValueChange = { name = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Full Name") })
+                                    OutlinedTextField(value = phone, onValueChange = { phone = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Phone Number") })
+                                    OutlinedTextField(value = location, onValueChange = { location = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Area / Location") })
+                                    OutlinedTextField(value = homeAddress, onValueChange = { homeAddress = it },
+                                        modifier = Modifier.fillMaxWidth(), label = { Text("Home Address in Zaria") }, maxLines = 3)
+                                    OutlinedButton(onClick = { profilePicker.launch(arrayOf("image/*")) },
+                                        modifier = Modifier.fillMaxWidth()) {
+                                        Text("Change Profile Photo")
+                                    }
+                                    Button(onClick = {
+                                        viewModel.updateMyUserProfile(
+                                            name.trim(),
+                                            phone.trim(),
+                                            location.trim(),
+                                            homeAddress.trim(),
+                                            profilePhotoUri
+                                        )
+                                    }, modifier = Modifier.fillMaxWidth()) {
+                                        Text("Save Profile Changes")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else -> {}
             }
         }
     }
