@@ -1,0 +1,174 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.zariaserviceconnect"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- Internet permission for API calls -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:5:5-67
+12-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:5:22-64
+13    <!-- Phone permission for calling providers -->
+14    <uses-permission android:name="android.permission.CALL_PHONE" />
+14-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:7:5-69
+14-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:7:22-66
+15    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+15-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:10:5-79
+15-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:10:22-76
+16    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+16-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:11:5-81
+16-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:11:22-78
+17
+18    <!-- Required for the phone dialer intent -->
+19    <queries>
+19-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:38:5-43:15
+20        <intent>
+20-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:39:9-42:18
+21            <action android:name="android.intent.action.DIAL" />
+21-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:13-65
+21-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:21-62
+22
+23            <data android:scheme="tel" />
+23-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:13-42
+23-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:19-39
+24        </intent>
+25    </queries>
+26
+27    <permission
+27-->[androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+28        android:name="com.example.zariaserviceconnect.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+28-->[androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+29        android:protectionLevel="signature" />
+29-->[androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+30
+31    <uses-permission android:name="com.example.zariaserviceconnect.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+31-->[androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+31-->[androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+32
+33    <application
+33-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:14:5-35:19
+34        android:allowBackup="true"
+34-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:15:9-35
+35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+35-->[androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+36        android:extractNativeLibs="false"
+37        android:label="Zaria ServiceConnect"
+37-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:16:9-45
+38        android:theme="@style/Theme.ZariaServiceConnect"
+38-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:17:9-57
+39        android:usesCleartextTraffic="true" >
+39-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:18:9-44
+40
+41        <!--
+42            usesCleartextTraffic="true" allows HTTP connections (not just HTTPS).
+43            This is needed for local development with http://192.168.x.x:8000
+44            Change to false and use HTTPS when deploying to production.
+45        -->
+46
+47        <activity
+47-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:25:9-33:20
+48            android:name="com.example.zariaserviceconnect.MainActivity"
+48-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:26:13-41
+49            android:exported="true"
+49-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:27:13-36
+50            android:windowSoftInputMode="adjustResize" >
+50-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:28:13-55
+51            <intent-filter>
+51-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:29:13-32:29
+52                <action android:name="android.intent.action.MAIN" />
+52-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:17-69
+52-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:25-66
+53
+54                <category android:name="android.intent.category.LAUNCHER" />
+54-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:17-77
+54-->C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:27-74
+55            </intent-filter>
+56        </activity>
+57        <activity
+57-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\f5706350203cb6100b98edbb87201657\transformed\play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
+58            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+58-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\f5706350203cb6100b98edbb87201657\transformed\play-services-base-18.1.0\AndroidManifest.xml:20:19-85
+59            android:exported="false"
+59-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\f5706350203cb6100b98edbb87201657\transformed\play-services-base-18.1.0\AndroidManifest.xml:22:19-43
+60            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+60-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\f5706350203cb6100b98edbb87201657\transformed\play-services-base-18.1.0\AndroidManifest.xml:21:19-78
+61
+62        <meta-data
+62-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\752ac7a5c3203c936c717734bb7968ab\transformed\play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
+63            android:name="com.google.android.gms.version"
+63-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\752ac7a5c3203c936c717734bb7968ab\transformed\play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
+64            android:value="@integer/google_play_services_version" />
+64-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\752ac7a5c3203c936c717734bb7968ab\transformed\play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
+65
+66        <provider
+66-->[androidx.emoji2:emoji2:1.3.0] C:\Users\dell\.gradle\caches\transforms-4\a6cf86583c5b0ff31afb610b2c47b555\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+67            android:name="androidx.startup.InitializationProvider"
+67-->[androidx.emoji2:emoji2:1.3.0] C:\Users\dell\.gradle\caches\transforms-4\a6cf86583c5b0ff31afb610b2c47b555\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+68            android:authorities="com.example.zariaserviceconnect.androidx-startup"
+68-->[androidx.emoji2:emoji2:1.3.0] C:\Users\dell\.gradle\caches\transforms-4\a6cf86583c5b0ff31afb610b2c47b555\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+69            android:exported="false" >
+69-->[androidx.emoji2:emoji2:1.3.0] C:\Users\dell\.gradle\caches\transforms-4\a6cf86583c5b0ff31afb610b2c47b555\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+70            <meta-data
+70-->[androidx.emoji2:emoji2:1.3.0] C:\Users\dell\.gradle\caches\transforms-4\a6cf86583c5b0ff31afb610b2c47b555\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+71                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+71-->[androidx.emoji2:emoji2:1.3.0] C:\Users\dell\.gradle\caches\transforms-4\a6cf86583c5b0ff31afb610b2c47b555\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+72                android:value="androidx.startup" />
+72-->[androidx.emoji2:emoji2:1.3.0] C:\Users\dell\.gradle\caches\transforms-4\a6cf86583c5b0ff31afb610b2c47b555\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+73            <meta-data
+73-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\dell\.gradle\caches\transforms-4\324a2600a673c3a24b98fc0857430466\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+74                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+74-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\dell\.gradle\caches\transforms-4\324a2600a673c3a24b98fc0857430466\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+75                android:value="androidx.startup" />
+75-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\dell\.gradle\caches\transforms-4\324a2600a673c3a24b98fc0857430466\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+76            <meta-data
+76-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+77                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+77-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+78                android:value="androidx.startup" />
+78-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+79        </provider>
+80
+81        <receiver
+81-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+82            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+82-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+83            android:directBootAware="false"
+83-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+84            android:enabled="true"
+84-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+85            android:exported="true"
+85-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+86            android:permission="android.permission.DUMP" >
+86-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+87            <intent-filter>
+87-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+88                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+88-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+88-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+89            </intent-filter>
+90            <intent-filter>
+90-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+91                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+91-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+91-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+92            </intent-filter>
+93            <intent-filter>
+93-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+94                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+94-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+94-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+95            </intent-filter>
+96            <intent-filter>
+96-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+97                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+97-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+97-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\dell\.gradle\caches\transforms-4\7c247f36020f5ee6553282177bfa6962\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+98            </intent-filter>
+99        </receiver>
+100    </application>
+101
+102</manifest>

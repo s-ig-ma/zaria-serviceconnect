@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:2:1-45:12
-INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:2:1-45:12
-INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:2:1-45:12
-INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:2:1-45:12
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:2:1-47:12
+INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:2:1-47:12
+INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:2:1-47:12
+INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:2:1-47:12
 MERGED from [com.google.android.gms:play-services-location:21.1.0] C:\Users\dell\.gradle\caches\transforms-4\bc077fbfa8866d73ad24e2775c8f6efa\transformed\play-services-location-21.1.0\AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\f5706350203cb6100b98edbb87201657\transformed\play-services-base-18.1.0\AndroidManifest.xml:16:1-24:12
 MERGED from [com.google.android.gms:play-services-tasks:18.0.2] C:\Users\dell\.gradle\caches\transforms-4\9b8493c5c03be338b5e0465457c8adaf\transformed\play-services-tasks-18.0.2\AndroidManifest.xml:2:1-6:12
@@ -71,6 +71,7 @@ MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\dell\.gradle
 MERGED from [androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:17:1-30:12
 MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\dell\.gradle\caches\transforms-4\cb5c5c9e74e9aa0d00df536c1a87a94d\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.core:core-ktx:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\ce4b29b7364d564439eb7adfea249c81\transformed\core-ktx-1.12.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\dell\.gradle\caches\transforms-4\8b548f9e184f08484eba70d64bff4137\transformed\core-splashscreen-1.0.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\dell\.gradle\caches\transforms-4\bde190b566942879702968d12a7c4132\transformed\datastore-preferences-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.datastore:datastore:1.0.0] C:\Users\dell\.gradle\caches\transforms-4\e2556df52d79abfcc82ee2864bd4ff96\transformed\datastore-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.1] C:\Users\dell\.gradle\caches\transforms-4\eefd3244f9201e4c32978ba74c3dd5aa\transformed\runtime-saveable-release\AndroidManifest.xml:2:1-7:12
@@ -112,8 +113,8 @@ ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\Z
 	android:name
 		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:11:22-78
 application
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:14:5-35:19
-INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:14:5-35:19
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:14:5-37:19
+INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:14:5-37:19
 MERGED from [com.google.android.gms:play-services-location:21.1.0] C:\Users\dell\.gradle\caches\transforms-4\bc077fbfa8866d73ad24e2775c8f6efa\transformed\play-services-location-21.1.0\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-location:21.1.0] C:\Users\dell\.gradle\caches\transforms-4\bc077fbfa8866d73ad24e2775c8f6efa\transformed\play-services-location-21.1.0\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-base:18.1.0] C:\Users\dell\.gradle\caches\transforms-4\f5706350203cb6100b98edbb87201657\transformed\play-services-base-18.1.0\AndroidManifest.xml:19:5-23:19
@@ -141,43 +142,47 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\dell\.gradle\cache
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\21669e6d68ca88325e9b69b3384a8c3b\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:16:9-45
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:17:9-45
+	android:roundIcon
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:18:9-54
+	android:icon
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:16:9-43
 	android:allowBackup
 		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:15:9-35
 	android:theme
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:17:9-57
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:19:9-66
 	android:usesCleartextTraffic
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:18:9-44
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:20:9-44
 activity#com.example.zariaserviceconnect.MainActivity
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:25:9-33:20
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:27:9-35:20
 	android:windowSoftInputMode
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:28:13-55
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:13-55
 	android:exported
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:27:13-36
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:29:13-36
 	android:name
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:26:13-41
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:28:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:29:13-32:29
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:13-34:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:17-69
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:32:17-69
 	android:name
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:30:25-66
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:32:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:17-77
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:33:17-77
 	android:name
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:31:27-74
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:33:27-74
 queries
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:38:5-43:15
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:5-45:15
 intent#action:name:android.intent.action.DIAL+data:scheme:tel
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:39:9-42:18
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:9-44:18
 action#android.intent.action.DIAL
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:13-65
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:42:13-65
 	android:name
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:40:21-62
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:42:21-62
 data
-ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:13-42
+ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:43:13-42
 	android:scheme
-		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:41:19-39
+		ADDED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml:43:19-39
 uses-sdk
 INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\dell\Downloads\original_folders\ZariaServiceConnect-kotlin\ZariaServiceConnect\app\src\main\AndroidManifest.xml
@@ -316,6 +321,8 @@ MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\del
 MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\dell\.gradle\caches\transforms-4\cb5c5c9e74e9aa0d00df536c1a87a94d\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
 MERGED from [androidx.core:core-ktx:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\ce4b29b7364d564439eb7adfea249c81\transformed\core-ktx-1.12.0\AndroidManifest.xml:5:5-44
 MERGED from [androidx.core:core-ktx:1.12.0] C:\Users\dell\.gradle\caches\transforms-4\ce4b29b7364d564439eb7adfea249c81\transformed\core-ktx-1.12.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\dell\.gradle\caches\transforms-4\8b548f9e184f08484eba70d64bff4137\transformed\core-splashscreen-1.0.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-splashscreen:1.0.1] C:\Users\dell\.gradle\caches\transforms-4\8b548f9e184f08484eba70d64bff4137\transformed\core-splashscreen-1.0.1\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\dell\.gradle\caches\transforms-4\bde190b566942879702968d12a7c4132\transformed\datastore-preferences-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\dell\.gradle\caches\transforms-4\bde190b566942879702968d12a7c4132\transformed\datastore-preferences-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.datastore:datastore:1.0.0] C:\Users\dell\.gradle\caches\transforms-4\e2556df52d79abfcc82ee2864bd4ff96\transformed\datastore-1.0.0\AndroidManifest.xml:20:5-22:41

@@ -13,8 +13,10 @@
 
     <application
         android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="Zaria ServiceConnect"
-        android:theme="@style/Theme.ZariaServiceConnect"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/Theme.ZariaServiceConnect.Starting"
         android:usesCleartextTraffic="true">
         <!--
             usesCleartextTraffic="true" allows HTTP connections (not just HTTPS).

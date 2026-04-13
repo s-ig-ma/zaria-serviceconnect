@@ -41,6 +41,7 @@ android {
 dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
 
@@ -80,4 +81,11 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     debugImplementation("androidx.compose.ui:ui-tooling")
+}
+
+// Compatibility alias for tools/commands that still invoke :app:testClasses.
+tasks.register("testClasses") {
+    group = "verification"
+    description = "Compatibility task that maps Java-style testClasses to Android unit tests."
+    dependsOn("testDebugUnitTest")
 }

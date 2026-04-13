@@ -6,19 +6,27 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.zariaserviceconnect.models.ComplaintModel
 import com.example.zariaserviceconnect.ui.auth.*
 import com.example.zariaserviceconnect.ui.provider.*
@@ -42,6 +50,7 @@ object Routes {
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
@@ -298,10 +307,17 @@ fun SplashScreen(onNavigate: (String?) -> Unit) {
     }
 
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = androidx.compose.ui.Alignment.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
     ) {
-        Text("Zaria ServiceConnect", style = MaterialTheme.typography.headlineMedium)
+        Image(
+            painter = painterResource(id = R.drawable.ic_splash_logo),
+            contentDescription = "Zaria ServiceConnect logo",
+            modifier = Modifier.size(180.dp),
+            contentScale = ContentScale.Fit
+        )
     }
 }
 
