@@ -1,6 +1,7 @@
 package com.example.zariaserviceconnect
 
 import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,6 +29,8 @@ import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.zariaserviceconnect.models.ComplaintModel
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.example.zariaserviceconnect.ui.auth.*
 import com.example.zariaserviceconnect.ui.provider.*
 import com.example.zariaserviceconnect.ui.resident.*
@@ -35,6 +38,7 @@ import com.example.zariaserviceconnect.ui.shared.*
 import com.example.zariaserviceconnect.utils.LocationHelper
 import com.example.zariaserviceconnect.viewmodel.MainViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.tasks.await
 
 object Routes {
     const val SPLASH            = "splash"
@@ -67,6 +71,7 @@ fun ZariaApp() {
     val navController = rememberNavController()
     val viewModel: MainViewModel = viewModel()
     val context = LocalContext.current
+    val userRole by viewModel.userRole.collectAsState()
 
     // ── Location permission launcher ──────────────────────────────────────────
     // This shows the system permission dialog when launched
@@ -80,15 +85,30 @@ fun ZariaApp() {
 
     // On first launch check if we already have permission, if not request it
     LaunchedEffect(Unit) {
+        val permissions = mutableListOf<String>()
+
         if (LocationHelper.hasPermission(context)) {
             viewModel.fetchUserLocation(context)
         } else {
-            locationPermissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            )
+            permissions += Manifest.permission.ACCESS_FINE_LOCATION
+            permissions += Manifest.permission.ACCESS_COARSE_LOCATION
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions += Manifest.permission.POST_NOTIFICATIONS
+        }
+
+        if (permissions.isNotEmpty()) {
+            locationPermissionLauncher.launch(permissions.toTypedArray())
+        }
+    }
+
+    LaunchedEffect(userRole) {
+        if (userRole != null) {
+            runCatching { Firebase.messaging.token.await() }
+                .onSuccess { token ->
+                    viewModel.registerDeviceToken(token, "Android app")
+                }
         }
     }
 

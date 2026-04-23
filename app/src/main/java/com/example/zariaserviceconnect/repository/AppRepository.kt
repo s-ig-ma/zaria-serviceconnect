@@ -417,6 +417,22 @@ class AppRepository(private val context: Context) {
         Result.failure(Exception("Cannot connect to server."))
     }
 
+    suspend fun registerDeviceToken(token: String, deviceName: String? = null): Result<MessageResponse> = try {
+        val response = api.registerDeviceToken(DeviceTokenRequest(token, deviceName))
+        if (response.isSuccessful && response.body() != null) Result.success(response.body()!!)
+        else Result.failure(Exception(errorMessage(response.code(), response.errorBody()?.string())))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
+    suspend fun unregisterDeviceToken(token: String): Result<MessageResponse> = try {
+        val response = api.unregisterDeviceToken(DeviceTokenRequest(token))
+        if (response.isSuccessful && response.body() != null) Result.success(response.body()!!)
+        else Result.failure(Exception(errorMessage(response.code(), response.errorBody()?.string())))
+    } catch (e: Exception) {
+        Result.failure(Exception("Cannot connect to server."))
+    }
+
     suspend fun logout() = TokenManager.clearAll(context)
     suspend fun getRole() = TokenManager.getRole(context)
     suspend fun isLoggedIn() = TokenManager.isLoggedIn(context)

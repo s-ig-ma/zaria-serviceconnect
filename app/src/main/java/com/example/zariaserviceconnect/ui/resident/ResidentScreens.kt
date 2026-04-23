@@ -164,9 +164,9 @@ fun CategoriesScreen(
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                             modifier            = Modifier.fillMaxSize()
                         ) {
-                            item {
-                                Card(
-                                    modifier = Modifier
+                        item {
+                            Card(
+                                modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { onAllProviders() },
                                     colors = CardDefaults.cardColors(
@@ -1255,6 +1255,41 @@ fun ResidentProfileScreen(
                                         )
                                     }, modifier = Modifier.fillMaxWidth()) {
                                         Text("Save Profile Changes")
+                                    }
+                                }
+                            }
+                        }
+
+                        item {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFEBEE))
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    Text(
+                                        "Logout",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        color = Color(0xFFB71C1C)
+                                    )
+                                    Text(
+                                        "Sign out here if you want to switch to another account.",
+                                        color = Color(0xFF7F0000),
+                                        fontSize = 13.sp
+                                    )
+                                    Button(
+                                        onClick = onLogout,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB71C1C))
+                                    ) {
+                                        Icon(Icons.Default.Logout, null)
+                                        Spacer(Modifier.width(8.dp))
+                                        Text("Logout")
                                     }
                                 }
                             }

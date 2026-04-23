@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SplashScreen" parent="Base.Theme.SplashScreen.DayNight">
+        <item name="android:windowSplashScreenAnimatedIcon">?windowSplashScreenAnimatedIcon</item>
+        <item name="android:windowSplashScreenBackground">?windowSplashScreenBackground</item>
+        <item name="android:windowSplashScreenAnimationDuration">
+            ?windowSplashScreenAnimationDuration
+        </item>
+    </style>
+    <style name="Theme.SplashScreen.IconBackground" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenIconBackgroundColor">
+            ?windowSplashScreenIconBackgroundColor
+        </item>
+    </style>
+    <style name="Theme.ZariaServiceConnect.Starting" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenBackground">@color/splash_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.ZariaServiceConnect</item>
+    </style>
+</resources>

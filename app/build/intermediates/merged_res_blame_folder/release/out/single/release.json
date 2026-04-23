@@ -1,0 +1,74 @@
+[
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/drawable_ic_launcher_foreground.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/drawable/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/drawable_ic_splash_logo.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/drawable/ic_splash_logo.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/drawable_app_logo.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/drawable/app_logo.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/drawable_blue_z.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/drawable/blue_z.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/drawable_final_logo.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/drawable/final_logo.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.zariaserviceconnect.app-merged_res-60:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.zariaserviceconnect.app-main-61:/mipmap-xxhdpi/ic_launcher.png"
+    }
+]

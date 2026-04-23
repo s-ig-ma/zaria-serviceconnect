@@ -25,6 +25,11 @@ data class RegisterResidentRequest(
 
 data class MessageResponse(val message: String, val success: Boolean)
 
+data class DeviceTokenRequest(
+    val token: String,
+    @SerializedName("device_name") val deviceName: String? = null
+)
+
 // ── User ──────────────────────────────────────────────────────────────────────
 
 data class UserModel(

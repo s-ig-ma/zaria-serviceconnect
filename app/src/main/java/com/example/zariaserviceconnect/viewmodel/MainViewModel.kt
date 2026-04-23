@@ -563,6 +563,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     // ── Availability Actions (NEW) ───────────────────────────────────────────
 
+    fun registerDeviceToken(token: String, deviceName: String? = null) {
+        viewModelScope.launch {
+            if (repo.isLoggedIn()) {
+                repo.registerDeviceToken(token, deviceName)
+            }
+        }
+    }
+
+    fun unregisterDeviceToken(token: String) {
+        viewModelScope.launch {
+            if (repo.isLoggedIn()) {
+                repo.unregisterDeviceToken(token)
+            }
+        }
+    }
+
     fun setAvailability(status: String) {
         viewModelScope.launch {
             _availabilityAction.value = UiState.Loading

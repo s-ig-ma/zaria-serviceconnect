@@ -567,6 +567,41 @@ fun ProviderProfileScreen(viewModel: MainViewModel, onLogout: () -> Unit) {
                                 }
                             }
                         }
+
+                        item {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFEBEE))
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    Text(
+                                        "Logout",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        color = Color(0xFFB71C1C)
+                                    )
+                                    Text(
+                                        "Use this when you want to sign out and log in with another account.",
+                                        color = Color(0xFF7F0000),
+                                        fontSize = 13.sp
+                                    )
+                                    Button(
+                                        onClick = onLogout,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB71C1C))
+                                    ) {
+                                        Icon(Icons.Default.Logout, null)
+                                        Spacer(Modifier.width(8.dp))
+                                        Text("Logout")
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 else -> {}

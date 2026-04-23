@@ -5,7 +5,6 @@ attr argType
 attr buttonSize
 attr circleCrop
 attr colorScheme
-attr coordinatorLayoutStyle
 attr data
 attr dataPattern
 attr destination
@@ -25,15 +24,8 @@ attr fontWeight
 attr graph
 attr imageAspectRatio
 attr imageAspectRatioAdjust
-attr keylines
 attr lStar
 attr launchSingleTop
-attr layout_anchor
-attr layout_anchorGravity
-attr layout_behavior
-attr layout_dodgeInsetEdges
-attr layout_insetEdge
-attr layout_keyline
 attr mimeType
 attr navGraph
 attr nestedScrollViewStyle
@@ -51,7 +43,6 @@ attr scopeUris
 attr shortcutMatchRequired
 attr splashScreenIconSize
 attr startDestination
-attr statusBarBackground
 attr targetPackage
 attr ttcIndex
 attr uri
@@ -199,28 +190,17 @@ id action_text
 id actions
 id adjust_height
 id adjust_width
-id all
 id androidx_compose_ui_view_composition_context
 id async
 id auto
 id blocking
-id bottom
-id center
-id center_horizontal
-id center_vertical
 id chronometer
-id clip_horizontal
-id clip_vertical
 id coil_request_manager
 id compose_view_saveable_id_tag
 id consume_window_insets_tag
 id dark
 id dialog_button
 id edit_text_id
-id end
-id fill
-id fill_horizontal
-id fill_vertical
 id forever
 id hide_ime_id
 id hide_in_inspector_tag
@@ -231,7 +211,6 @@ id info
 id inspection_slot_table_set
 id is_pooling_container_tag
 id italic
-id left
 id light
 id line1
 id line3
@@ -243,12 +222,10 @@ id notification_main_column
 id notification_main_column_container
 id pooling_container_listener_holder_tag
 id report_drawn
-id right
 id right_icon
 id right_side
 id splashscreen_icon_view
 id standard
-id start
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans
 id tag_accessibility_heading
@@ -266,7 +243,6 @@ id text
 id text2
 id time
 id title
-id top
 id view_tree_lifecycle_owner
 id view_tree_on_back_pressed_dispatcher_owner
 id view_tree_saved_state_registry_owner
@@ -288,6 +264,7 @@ layout notification_template_part_time
 layout splash_screen_view
 mipmap ic_launcher
 mipmap ic_launcher_round
+raw firebase_common_keep
 string androidx_startup
 string call_notification_answer_action
 string call_notification_answer_video_action
@@ -319,6 +296,12 @@ string common_signin_button_text_long
 string default_error_message
 string default_popup_window_title
 string dropdown_menu
+string fcm_fallback_notification_channel_label
+string gcm_defaultSenderId
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
 string in_progress
 string indeterminate
 string m3c_bottom_sheet_collapse_description
@@ -381,6 +364,7 @@ string navigation_menu
 string not_selected
 string off
 string on
+string project_id
 string range_end
 string range_start
 string selected
@@ -412,15 +396,12 @@ style Theme_ZariaServiceConnect
 style Theme_ZariaServiceConnect_Starting
 style Widget_Compat_NotificationActionContainer
 style Widget_Compat_NotificationActionText
-style Widget_Support_CoordinatorLayout
 styleable ActivityNavigator android_name action data dataPattern targetPackage
 styleable AnimatedStateListDrawableCompat android_dither android_visible android_variablePadding android_constantSize android_enterFadeDuration android_exitFadeDuration
 styleable AnimatedStateListDrawableItem android_id android_drawable
 styleable AnimatedStateListDrawableTransition android_drawable android_toId android_fromId android_reversible
 styleable Capability queryPatterns shortcutMatchRequired
 styleable ColorStateListItem android_color android_alpha android_lStar alpha lStar
-styleable CoordinatorLayout keylines statusBarBackground
-styleable CoordinatorLayout_Layout android_layout_gravity layout_anchor layout_anchorGravity layout_behavior layout_dodgeInsetEdges layout_insetEdge layout_keyline
 styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery fontProviderSystemFontFamily
 styleable FontFamilyFont android_font android_fontWeight android_fontStyle android_ttcIndex android_fontVariationSettings font fontStyle fontVariationSettings fontWeight ttcIndex
 styleable GradientColor android_startColor android_endColor android_type android_centerX android_centerY android_gradientRadius android_tileMode android_centerColor android_startX android_startY android_endX android_endY

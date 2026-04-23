@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.zariaserviceconnect.app-mergeDebugResources-59:/values-watch-v20/values-watch-v20.xml",
+            "outputFile": "com.example.zariaserviceconnect.app-mergeDebugResources-61:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\dell\\.gradle\\caches\\transforms-4\\8b548f9e184f08484eba70d64bff4137\\transformed\\core-splashscreen-1.0.1\\res\\values-watch-v20\\values-watch-v20.xml",
+                    "source": "C:\\Users\\dell\\.gradle\\caches\\transforms-4\\89e8a2b52fbd8817acffa57dfe4f0f29\\transformed\\core-splashscreen-1.0.1\\res\\values-watch-v20\\values-watch-v20.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

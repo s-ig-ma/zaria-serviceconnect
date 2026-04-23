@@ -176,4 +176,14 @@ interface ApiService {
 
     @PATCH("notifications/read-all")
     suspend fun markAllNotificationsRead(): Response<MessageResponse>
+
+    @POST("notifications/devices/register")
+    suspend fun registerDeviceToken(
+        @Body request: DeviceTokenRequest
+    ): Response<MessageResponse>
+
+    @POST("notifications/devices/unregister")
+    suspend fun unregisterDeviceToken(
+        @Body request: DeviceTokenRequest
+    ): Response<MessageResponse>
 }

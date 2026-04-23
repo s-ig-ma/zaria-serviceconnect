@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     // ⚠️ CHANGE THIS to your PC's IP address
-    const val BASE_URL = "http://10.58.38.215:8000/"
+    const val BASE_URL = "http://10.236.224.215:8000/"
 
     /**
      * AuthInterceptor automatically adds the JWT token to every request.
