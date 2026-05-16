@@ -158,8 +158,3 @@ Then:
 
 The app will connect to the hosted backend URL in `RetrofitClient.kt`.
 
-## Defense Explanation
-
-You can say:
-
-"The Android app is the mobile interface for residents and providers. It uses Retrofit to send API requests to the FastAPI backend. The backend handles the logic and database, while the Android app focuses on showing screens and collecting user input."
